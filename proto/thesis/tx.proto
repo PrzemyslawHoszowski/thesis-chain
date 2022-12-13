@@ -1,6 +1,7 @@
 syntax = "proto3";
 package thesis.thesis;
 
+import "thesis/roles.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "thesis/x/thesis/types";
@@ -8,6 +9,10 @@ option go_package = "thesis/x/thesis/types";
 // Msg defines the Msg service.
 service Msg {
       rpc AddCertificate(MsgAddCertificate) returns (MsgAddCertificateResponse);
+  rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
+  rpc CreateRoles(MsgCreateRoles) returns (MsgCreateRolesResponse);
+  rpc UpdateRoles(MsgUpdateRoles) returns (MsgUpdateRolesResponse);
+  rpc DeleteRoles(MsgDeleteRoles) returns (MsgDeleteRolesResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,4 +25,40 @@ message MsgAddCertificate {
 message MsgAddCertificateResponse {
   uint64 id = 1;
 }
+message MsgCreateDocument {
+  string creator = 1;
+  string files = 2;
+}
+
+message MsgCreateDocumentResponse {
+}
+
+message MsgCreateRoles {
+  string creator = 1;
+  string index = 2;
+
+  repeated string admins = 3;
+  repeated string editors = 4;
+  repeated string signers = 5;
+  repeated string viewers = 6;
+}
+message MsgCreateRolesResponse {}
+
+message MsgUpdateRoles {
+  string creator = 1;
+  string index = 2;
+
+  repeated string admins = 3;
+  repeated string editors = 4;
+  repeated string signers = 5;
+  repeated string viewers = 6;
+}
+message MsgUpdateRolesResponse {}
+
+message MsgDeleteRoles {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteRolesResponse {}
+
 // this line is used by starport scaffolding # proto/tx/message

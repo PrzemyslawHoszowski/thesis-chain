@@ -1,0 +1,12 @@
+syntax = "proto3";
+package thesis.documents;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "thesis/x/documents/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}

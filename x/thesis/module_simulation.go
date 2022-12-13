@@ -28,6 +28,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAddCertificate int = 100
 
+	opWeightMsgCreateDocument = "op_weight_msg_create_document"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateDocument int = 100
+
+	opWeightMsgCreateRoles = "op_weight_msg_roles"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateRoles int = 100
+
+	opWeightMsgUpdateRoles = "op_weight_msg_roles"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateRoles int = 100
+
+	opWeightMsgDeleteRoles = "op_weight_msg_roles"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteRoles int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -39,6 +55,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	thesisGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		RolesList: []types.Roles{
+			{
+				Creator: sample.AccAddress(),
+				Index:   "0",
+			},
+			{
+				Creator: sample.AccAddress(),
+				Index:   "1",
+			},
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&thesisGenesis)
@@ -71,6 +97,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAddCertificate,
 		thesissimulation.SimulateMsgAddCertificate(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateDocument int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateDocument, &weightMsgCreateDocument, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateDocument = defaultWeightMsgCreateDocument
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateDocument,
+		thesissimulation.SimulateMsgCreateDocument(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateRoles int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateRoles, &weightMsgCreateRoles, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateRoles = defaultWeightMsgCreateRoles
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateRoles,
+		thesissimulation.SimulateMsgCreateRoles(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateRoles int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateRoles, &weightMsgUpdateRoles, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateRoles = defaultWeightMsgUpdateRoles
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateRoles,
+		thesissimulation.SimulateMsgUpdateRoles(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteRoles int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteRoles, &weightMsgDeleteRoles, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteRoles = defaultWeightMsgDeleteRoles
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteRoles,
+		thesissimulation.SimulateMsgDeleteRoles(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
