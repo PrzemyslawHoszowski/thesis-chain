@@ -29,6 +29,7 @@ import IbcGoV3IbcCoreClientV1 from './ibc-go/v3/ibc.core.client.v1'
 import IbcGoV3IbcCoreConnectionV1 from './ibc-go/v3/ibc.core.connection.v1'
 import TendermintSpnTendermintSpnClaim from './tendermint/spn/tendermint.spn.claim'
 import TendermintSpnTendermintSpnMonitoringp from './tendermint/spn/tendermint.spn.monitoringp'
+import ThesisThesisDocuments from './thesis/thesis.documents'
 import ThesisThesisThesis from './thesis/thesis.thesis'
 
 
@@ -62,6 +63,7 @@ export default {
   IbcGoV3IbcCoreConnectionV1: load(IbcGoV3IbcCoreConnectionV1, 'ibc.core.connection.v1'),
   TendermintSpnTendermintSpnClaim: load(TendermintSpnTendermintSpnClaim, 'tendermint.spn.claim'),
   TendermintSpnTendermintSpnMonitoringp: load(TendermintSpnTendermintSpnMonitoringp, 'tendermint.spn.monitoringp'),
+  ThesisThesisDocuments: load(ThesisThesisDocuments, 'thesis.documents'),
   ThesisThesisThesis: load(ThesisThesisThesis, 'thesis.thesis'),
   
 }
