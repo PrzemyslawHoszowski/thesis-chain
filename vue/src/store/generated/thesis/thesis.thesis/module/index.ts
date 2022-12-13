@@ -4,19 +4,11 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgDeleteRoles } from "./types/thesis/tx";
 import { MsgAddCertificate } from "./types/thesis/tx";
-import { MsgCreateRoles } from "./types/thesis/tx";
-import { MsgUpdateRoles } from "./types/thesis/tx";
-import { MsgCreateDocument } from "./types/thesis/tx";
 
 
 const types = [
-  ["/thesis.thesis.MsgDeleteRoles", MsgDeleteRoles],
   ["/thesis.thesis.MsgAddCertificate", MsgAddCertificate],
-  ["/thesis.thesis.MsgCreateRoles", MsgCreateRoles],
-  ["/thesis.thesis.MsgUpdateRoles", MsgUpdateRoles],
-  ["/thesis.thesis.MsgCreateDocument", MsgCreateDocument],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -49,11 +41,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgDeleteRoles: (data: MsgDeleteRoles): EncodeObject => ({ typeUrl: "/thesis.thesis.MsgDeleteRoles", value: MsgDeleteRoles.fromPartial( data ) }),
     msgAddCertificate: (data: MsgAddCertificate): EncodeObject => ({ typeUrl: "/thesis.thesis.MsgAddCertificate", value: MsgAddCertificate.fromPartial( data ) }),
-    msgCreateRoles: (data: MsgCreateRoles): EncodeObject => ({ typeUrl: "/thesis.thesis.MsgCreateRoles", value: MsgCreateRoles.fromPartial( data ) }),
-    msgUpdateRoles: (data: MsgUpdateRoles): EncodeObject => ({ typeUrl: "/thesis.thesis.MsgUpdateRoles", value: MsgUpdateRoles.fromPartial( data ) }),
-    msgCreateDocument: (data: MsgCreateDocument): EncodeObject => ({ typeUrl: "/thesis.thesis.MsgCreateDocument", value: MsgCreateDocument.fromPartial( data ) }),
     
   };
 };

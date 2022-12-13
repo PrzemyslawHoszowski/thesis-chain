@@ -1,0 +1,88 @@
+syntax = "proto3";
+package thesis.documents;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "documents/params.proto";
+import "documents/document.proto";
+// this line is used by starport scaffolding # 1
+import "documents/roles.proto";
+
+option go_package = "thesis/x/documents/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/thesis/documents/params";
+  }
+  // Queries a Roles by index.
+	rpc Roles(QueryGetRolesRequest) returns (QueryGetRolesResponse) {
+		option (google.api.http).get = "/thesis/documents/roles/{index}";
+	}
+
+	// Queries a list of Roles items.
+	rpc RolesAll(QueryAllRolesRequest) returns (QueryAllRolesResponse) {
+		option (google.api.http).get = "/thesis/documents/roles";
+	}
+
+// Queries a Document by index.
+	rpc Document(QueryGetDocumentRequest) returns (QueryGetDocumentResponse) {
+		option (google.api.http).get = "/thesis/documents/document/{index}";
+	}
+
+	// Queries a list of Document items.
+	rpc DocumentAll(QueryAllDocumentRequest) returns (QueryAllDocumentResponse) {
+		option (google.api.http).get = "/thesis/documents/document";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetRolesRequest {
+	  string index = 1;
+
+}
+
+message QueryGetRolesResponse {
+	Roles roles = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRolesRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRolesResponse {
+	repeated Roles roles = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDocumentRequest {
+	  string index = 1;
+
+}
+
+message QueryGetDocumentResponse {
+	Document document = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDocumentRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDocumentResponse {
+	repeated Document document = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

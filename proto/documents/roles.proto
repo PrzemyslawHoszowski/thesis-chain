@@ -1,0 +1,14 @@
+syntax = "proto3";
+package thesis.documents;
+
+option go_package = "thesis/x/documents/types";
+
+message Roles {
+  string index = 1; 
+  repeated string admins = 2; 
+  repeated string editors = 3; 
+  repeated string signers = 4; 
+  repeated string viewers = 5; 
+  
+}
+

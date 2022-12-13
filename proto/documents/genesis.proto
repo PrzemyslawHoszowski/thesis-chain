@@ -1,0 +1,18 @@
+syntax = "proto3";
+package thesis.documents;
+
+import "gogoproto/gogo.proto";
+import "documents/params.proto";
+import "documents/roles.proto";
+import "documents/document.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "thesis/x/documents/types";
+
+// GenesisState defines the documents module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated Roles rolesList = 2 [(gogoproto.nullable) = false];
+  repeated Document documentList = 3 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

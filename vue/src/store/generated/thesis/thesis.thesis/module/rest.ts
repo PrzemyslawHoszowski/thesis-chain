@@ -28,61 +28,15 @@ export interface ThesisCertificate {
   address?: string;
 }
 
-export interface ThesisDocument {
-  index?: string;
-  state?: string;
-  files?: string[];
-  roles?: ThesisRoles;
-  signed?: string[];
-}
-
 export interface ThesisMsgAddCertificateResponse {
   /** @format uint64 */
   id?: string;
 }
 
-export type ThesisMsgCreateDocumentResponse = object;
-
-export type ThesisMsgCreateRolesResponse = object;
-
-export type ThesisMsgDeleteRolesResponse = object;
-
-export type ThesisMsgUpdateRolesResponse = object;
-
 /**
  * Params defines the parameters for the module.
  */
 export type ThesisParams = object;
-
-export interface ThesisQueryAllDocumentResponse {
-  document?: ThesisDocument[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface ThesisQueryAllRolesResponse {
-  roles?: ThesisRoles[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
 
 export interface ThesisQueryCertificatesResponse {
   Certificate?: ThesisCertificate[];
@@ -99,29 +53,12 @@ export interface ThesisQueryCertificatesResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface ThesisQueryGetDocumentResponse {
-  document?: ThesisDocument;
-}
-
-export interface ThesisQueryGetRolesResponse {
-  roles?: ThesisRoles;
-}
-
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface ThesisQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: ThesisParams;
-}
-
-export interface ThesisRoles {
-  index?: string;
-  admins?: string[];
-  editors?: string[];
-  signers?: string[];
-  viewers?: string[];
-  creator?: string;
 }
 
 /**
@@ -413,48 +350,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryDocumentAll
-   * @summary Queries a list of Document items.
-   * @request GET:/thesis/thesis/document
-   */
-  queryDocumentAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ThesisQueryAllDocumentResponse, RpcStatus>({
-      path: `/thesis/thesis/document`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryDocument
-   * @summary Queries a Document by index.
-   * @request GET:/thesis/thesis/document/{index}
-   */
-  queryDocument = (index: string, params: RequestParams = {}) =>
-    this.request<ThesisQueryGetDocumentResponse, RpcStatus>({
-      path: `/thesis/thesis/document/${index}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
    * @request GET:/thesis/thesis/params
@@ -462,48 +357,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<ThesisQueryParamsResponse, RpcStatus>({
       path: `/thesis/thesis/params`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRolesAll
-   * @summary Queries a list of Roles items.
-   * @request GET:/thesis/thesis/roles
-   */
-  queryRolesAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ThesisQueryAllRolesResponse, RpcStatus>({
-      path: `/thesis/thesis/roles`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRoles
-   * @summary Queries a Roles by index.
-   * @request GET:/thesis/thesis/roles/{index}
-   */
-  queryRoles = (index: string, params: RequestParams = {}) =>
-    this.request<ThesisQueryGetRolesResponse, RpcStatus>({
-      path: `/thesis/thesis/roles/${index}`,
       method: "GET",
       format: "json",
       ...params,

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package thesis.documents;
+
+option go_package = "thesis/x/documents/types";
+import "documents/roles.proto"; 
+
+message Document {
+  string index = 1; 
+  string state = 2; 
+  repeated string files = 3; 
+  Roles roles = 4; 
+  repeated string signed = 5; 
+  
+}
+
