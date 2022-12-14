@@ -65,6 +65,15 @@ export interface MsgSignDocumentResponse {
   id: number;
 }
 
+export interface MsgRejectSignature {
+  creator: string;
+  documentId: string;
+}
+
+export interface MsgRejectSignatureResponse {
+  id: number;
+}
+
 const baseMsgAddCertificate: object = { creator: "", hash: "", address: "" };
 
 export const MsgAddCertificate = {
@@ -1041,6 +1050,150 @@ export const MsgSignDocumentResponse = {
   },
 };
 
+const baseMsgRejectSignature: object = { creator: "", documentId: "" };
+
+export const MsgRejectSignature = {
+  encode(
+    message: MsgRejectSignature,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.documentId !== "") {
+      writer.uint32(18).string(message.documentId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRejectSignature {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRejectSignature } as MsgRejectSignature;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.documentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRejectSignature {
+    const message = { ...baseMsgRejectSignature } as MsgRejectSignature;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = String(object.documentId);
+    } else {
+      message.documentId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRejectSignature): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.documentId !== undefined && (obj.documentId = message.documentId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRejectSignature>): MsgRejectSignature {
+    const message = { ...baseMsgRejectSignature } as MsgRejectSignature;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = object.documentId;
+    } else {
+      message.documentId = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgRejectSignatureResponse: object = { id: 0 };
+
+export const MsgRejectSignatureResponse = {
+  encode(
+    message: MsgRejectSignatureResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgRejectSignatureResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgRejectSignatureResponse,
+    } as MsgRejectSignatureResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRejectSignatureResponse {
+    const message = {
+      ...baseMsgRejectSignatureResponse,
+    } as MsgRejectSignatureResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRejectSignatureResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgRejectSignatureResponse>
+  ): MsgRejectSignatureResponse {
+    const message = {
+      ...baseMsgRejectSignatureResponse,
+    } as MsgRejectSignatureResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddCertificate(
@@ -1052,8 +1205,11 @@ export interface Msg {
   AddUsers(request: MsgAddUsers): Promise<MsgAddUsersResponse>;
   RemoveUsers(request: MsgRemoveUsers): Promise<MsgRemoveUsersResponse>;
   EditFiles(request: MsgEditFiles): Promise<MsgEditFilesResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SignDocument(request: MsgSignDocument): Promise<MsgSignDocumentResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RejectSignature(
+    request: MsgRejectSignature
+  ): Promise<MsgRejectSignatureResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1116,6 +1272,20 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("thesis.thesis.Msg", "SignDocument", data);
     return promise.then((data) =>
       MsgSignDocumentResponse.decode(new Reader(data))
+    );
+  }
+
+  RejectSignature(
+    request: MsgRejectSignature
+  ): Promise<MsgRejectSignatureResponse> {
+    const data = MsgRejectSignature.encode(request).finish();
+    const promise = this.rpc.request(
+      "thesis.thesis.Msg",
+      "RejectSignature",
+      data
+    );
+    return promise.then((data) =>
+      MsgRejectSignatureResponse.decode(new Reader(data))
     );
   }
 }

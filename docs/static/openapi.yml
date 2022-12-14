@@ -52662,6 +52662,12 @@ definitions:
       id:
         type: string
         format: uint64
+  thesis.thesis.MsgRejectSignatureResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   thesis.thesis.MsgRemoveUsersResponse:
     type: object
     properties:

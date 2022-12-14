@@ -20,6 +20,10 @@ func (k msgServer) EditFiles(goCtx context.Context, msg *types.MsgEditFiles) (*t
 	if !(slices.Contains(document.Admins, msg.Creator) || slices.Contains(document.Editors, msg.Creator)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Tx signer is not authorized to this action")
 	}
+	if document.State != "Editing" {
+		return nil, sdkerrors.Wrap(types.ErrInvalidState, "Document can be edited only during editing state")
+	}
+
 	document.Files = msg.Files
 	k.SetDocument(ctx, document)
 	index, _ := strconv.ParseUint(document.Index, 10, 64)

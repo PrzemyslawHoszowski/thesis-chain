@@ -13,6 +13,7 @@ service Msg {
   rpc RemoveUsers(MsgRemoveUsers) returns (MsgRemoveUsersResponse);
   rpc EditFiles(MsgEditFiles) returns (MsgEditFilesResponse);
   rpc SignDocument(MsgSignDocument) returns (MsgSignDocumentResponse);
+  rpc RejectSignature(MsgRejectSignature) returns (MsgRejectSignatureResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -73,6 +74,15 @@ message MsgSignDocument {
 }
 
 message MsgSignDocumentResponse {
+  uint64 id = 1;
+}
+
+message MsgRejectSignature {
+  string creator = 1;
+  string documentId = 2;
+}
+
+message MsgRejectSignatureResponse {
   uint64 id = 1;
 }
 

@@ -36,6 +36,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdRemoveUsers())
 	cmd.AddCommand(CmdEditFiles())
 	cmd.AddCommand(CmdSignDocument())
+	cmd.AddCommand(CmdRejectSignature())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

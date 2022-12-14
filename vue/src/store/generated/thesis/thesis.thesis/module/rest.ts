@@ -60,6 +60,11 @@ export interface ThesisMsgEditFilesResponse {
   id?: string;
 }
 
+export interface ThesisMsgRejectSignatureResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export interface ThesisMsgRemoveUsersResponse {
   /** @format uint64 */
   id?: string;
