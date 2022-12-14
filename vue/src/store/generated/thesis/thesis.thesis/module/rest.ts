@@ -32,8 +32,12 @@ export interface ThesisDocument {
   index?: string;
   state?: string;
   files?: string[];
-  roles?: ThesisRoles;
+  admins?: string[];
+  editors?: string[];
+  signers?: string[];
+  viewers?: string[];
   signed?: string[];
+  rejectionReason?: string;
 }
 
 export interface ThesisMsgAddCertificateResponse {
@@ -41,13 +45,10 @@ export interface ThesisMsgAddCertificateResponse {
   id?: string;
 }
 
-export type ThesisMsgCreateDocumentResponse = object;
-
-export type ThesisMsgCreateRolesResponse = object;
-
-export type ThesisMsgDeleteRolesResponse = object;
-
-export type ThesisMsgUpdateRolesResponse = object;
+export interface ThesisMsgCreateDocumentResponse {
+  /** @format uint64 */
+  id?: string;
+}
 
 /**
  * Params defines the parameters for the module.
@@ -56,21 +57,6 @@ export type ThesisParams = object;
 
 export interface ThesisQueryAllDocumentResponse {
   document?: ThesisDocument[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface ThesisQueryAllRolesResponse {
-  roles?: ThesisRoles[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -103,8 +89,8 @@ export interface ThesisQueryGetDocumentResponse {
   document?: ThesisDocument;
 }
 
-export interface ThesisQueryGetRolesResponse {
-  roles?: ThesisRoles;
+export interface ThesisQueryGetSystemInfoResponse {
+  SystemInfo?: ThesisSystemInfo;
 }
 
 /**
@@ -115,13 +101,9 @@ export interface ThesisQueryParamsResponse {
   params?: ThesisParams;
 }
 
-export interface ThesisRoles {
-  index?: string;
-  admins?: string[];
-  editors?: string[];
-  signers?: string[];
-  viewers?: string[];
-  creator?: string;
+export interface ThesisSystemInfo {
+  /** @format uint64 */
+  nextDocumentId?: string;
 }
 
 /**
@@ -471,39 +453,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryRolesAll
-   * @summary Queries a list of Roles items.
-   * @request GET:/thesis/thesis/roles
+   * @name QuerySystemInfo
+   * @summary Queries a SystemInfo by index.
+   * @request GET:/thesis/thesis/system_info
    */
-  queryRolesAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<ThesisQueryAllRolesResponse, RpcStatus>({
-      path: `/thesis/thesis/roles`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRoles
-   * @summary Queries a Roles by index.
-   * @request GET:/thesis/thesis/roles/{index}
-   */
-  queryRoles = (index: string, params: RequestParams = {}) =>
-    this.request<ThesisQueryGetRolesResponse, RpcStatus>({
-      path: `/thesis/thesis/roles/${index}`,
+  querySystemInfo = (params: RequestParams = {}) =>
+    this.request<ThesisQueryGetSystemInfoResponse, RpcStatus>({
+      path: `/thesis/thesis/system_info`,
       method: "GET",
       format: "json",
       ...params,

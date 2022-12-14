@@ -8,6 +8,7 @@ option go_package = "thesis/x/thesis/types";
 // Msg defines the Msg service.
 service Msg {
       rpc AddCertificate(MsgAddCertificate) returns (MsgAddCertificateResponse);
+  rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,4 +21,13 @@ message MsgAddCertificate {
 message MsgAddCertificateResponse {
   uint64 id = 1;
 }
+message MsgCreateDocument {
+  string creator = 1;
+  repeated string files = 2;
+}
+
+message MsgCreateDocumentResponse {
+  uint64 id = 1;
+}
+
 // this line is used by starport scaffolding # proto/tx/message

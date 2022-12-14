@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAddCertificate int = 100
 
+	opWeightMsgCreateDocument = "op_weight_msg_create_document"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateDocument int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAddCertificate,
 		thesissimulation.SimulateMsgAddCertificate(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateDocument int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateDocument, &weightMsgCreateDocument, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateDocument = defaultWeightMsgCreateDocument
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateDocument,
+		thesissimulation.SimulateMsgCreateDocument(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

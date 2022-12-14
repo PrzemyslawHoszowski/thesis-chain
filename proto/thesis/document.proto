@@ -1,0 +1,18 @@
+syntax = "proto3";
+package thesis.thesis;
+
+option go_package = "thesis/x/thesis/types";
+
+message Document {
+  string index = 1; 
+  string state = 2; 
+  repeated string files = 3; 
+  repeated string admins = 4; 
+  repeated string editors = 5; 
+  repeated string signers = 6; 
+  repeated string viewers = 7; 
+  repeated string signed = 8; 
+  string rejectionReason = 9; 
+  
+}
+
