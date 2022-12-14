@@ -53057,6 +53057,8 @@ definitions:
       id:
         type: string
         format: uint64
+  thesis.thesis.MsgCreateDocumentResponse:
+    type: object
   thesis.thesis.Params:
     type: object
     description: Params defines the parameters for the module.

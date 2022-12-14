@@ -14,6 +14,13 @@ export interface MsgAddCertificateResponse {
   id: number;
 }
 
+export interface MsgCreateDocument {
+  creator: string;
+  files: string[];
+}
+
+export interface MsgCreateDocumentResponse {}
+
 const baseMsgAddCertificate: object = { creator: "", hash: "", address: "" };
 
 export const MsgAddCertificate = {
@@ -172,12 +179,146 @@ export const MsgAddCertificateResponse = {
   },
 };
 
+const baseMsgCreateDocument: object = { creator: "", files: "" };
+
+export const MsgCreateDocument = {
+  encode(message: MsgCreateDocument, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.files) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateDocument {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateDocument } as MsgCreateDocument;
+    message.files = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.files.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateDocument {
+    const message = { ...baseMsgCreateDocument } as MsgCreateDocument;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateDocument): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.files) {
+      obj.files = message.files.map((e) => e);
+    } else {
+      obj.files = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreateDocument>): MsgCreateDocument {
+    const message = { ...baseMsgCreateDocument } as MsgCreateDocument;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateDocumentResponse: object = {};
+
+export const MsgCreateDocumentResponse = {
+  encode(
+    _: MsgCreateDocumentResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateDocumentResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateDocumentResponse,
+    } as MsgCreateDocumentResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateDocumentResponse {
+    const message = {
+      ...baseMsgCreateDocumentResponse,
+    } as MsgCreateDocumentResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateDocumentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateDocumentResponse>
+  ): MsgCreateDocumentResponse {
+    const message = {
+      ...baseMsgCreateDocumentResponse,
+    } as MsgCreateDocumentResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   AddCertificate(
     request: MsgAddCertificate
   ): Promise<MsgAddCertificateResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateDocument(
+    request: MsgCreateDocument
+  ): Promise<MsgCreateDocumentResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -196,6 +337,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgAddCertificateResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateDocument(
+    request: MsgCreateDocument
+  ): Promise<MsgCreateDocumentResponse> {
+    const data = MsgCreateDocument.encode(request).finish();
+    const promise = this.rpc.request(
+      "thesis.thesis.Msg",
+      "CreateDocument",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateDocumentResponse.decode(new Reader(data))
     );
   }
 }

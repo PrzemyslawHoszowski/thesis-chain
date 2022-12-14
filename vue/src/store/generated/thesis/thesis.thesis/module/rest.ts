@@ -33,6 +33,8 @@ export interface ThesisMsgAddCertificateResponse {
   id?: string;
 }
 
+export type ThesisMsgCreateDocumentResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
