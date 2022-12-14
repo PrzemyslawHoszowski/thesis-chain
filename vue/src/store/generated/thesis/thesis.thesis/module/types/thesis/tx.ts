@@ -23,6 +23,44 @@ export interface MsgCreateDocumentResponse {
   id: number;
 }
 
+export interface MsgAddUsers {
+  creator: string;
+  documentId: string;
+  role: string;
+  addresses: string[];
+}
+
+export interface MsgAddUsersResponse {
+  id: number;
+}
+
+export interface MsgRemoveUsers {
+  creator: string;
+  documentId: string;
+  role: string;
+  addresses: string[];
+}
+
+export interface MsgRemoveUsersResponse {
+  id: number;
+}
+
+export interface MsgEditFiles {
+  creator: string;
+  documentId: string;
+  files: string[];
+}
+
+export interface MsgEditFilesResponse {}
+
+export interface MsgSignDocument {
+  creator: string;
+  documentId: string;
+  files: string[];
+}
+
+export interface MsgSignDocumentResponse {}
+
 const baseMsgAddCertificate: object = { creator: "", hash: "", address: "" };
 
 export const MsgAddCertificate = {
@@ -329,15 +367,649 @@ export const MsgCreateDocumentResponse = {
   },
 };
 
+const baseMsgAddUsers: object = {
+  creator: "",
+  documentId: "",
+  role: "",
+  addresses: "",
+};
+
+export const MsgAddUsers = {
+  encode(message: MsgAddUsers, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.documentId !== "") {
+      writer.uint32(18).string(message.documentId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    for (const v of message.addresses) {
+      writer.uint32(34).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAddUsers {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAddUsers } as MsgAddUsers;
+    message.addresses = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.documentId = reader.string();
+          break;
+        case 3:
+          message.role = reader.string();
+          break;
+        case 4:
+          message.addresses.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAddUsers {
+    const message = { ...baseMsgAddUsers } as MsgAddUsers;
+    message.addresses = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = String(object.documentId);
+    } else {
+      message.documentId = "";
+    }
+    if (object.role !== undefined && object.role !== null) {
+      message.role = String(object.role);
+    } else {
+      message.role = "";
+    }
+    if (object.addresses !== undefined && object.addresses !== null) {
+      for (const e of object.addresses) {
+        message.addresses.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAddUsers): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.documentId !== undefined && (obj.documentId = message.documentId);
+    message.role !== undefined && (obj.role = message.role);
+    if (message.addresses) {
+      obj.addresses = message.addresses.map((e) => e);
+    } else {
+      obj.addresses = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgAddUsers>): MsgAddUsers {
+    const message = { ...baseMsgAddUsers } as MsgAddUsers;
+    message.addresses = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = object.documentId;
+    } else {
+      message.documentId = "";
+    }
+    if (object.role !== undefined && object.role !== null) {
+      message.role = object.role;
+    } else {
+      message.role = "";
+    }
+    if (object.addresses !== undefined && object.addresses !== null) {
+      for (const e of object.addresses) {
+        message.addresses.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgAddUsersResponse: object = { id: 0 };
+
+export const MsgAddUsersResponse = {
+  encode(
+    message: MsgAddUsersResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAddUsersResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAddUsersResponse } as MsgAddUsersResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAddUsersResponse {
+    const message = { ...baseMsgAddUsersResponse } as MsgAddUsersResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAddUsersResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgAddUsersResponse>): MsgAddUsersResponse {
+    const message = { ...baseMsgAddUsersResponse } as MsgAddUsersResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgRemoveUsers: object = {
+  creator: "",
+  documentId: "",
+  role: "",
+  addresses: "",
+};
+
+export const MsgRemoveUsers = {
+  encode(message: MsgRemoveUsers, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.documentId !== "") {
+      writer.uint32(18).string(message.documentId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    for (const v of message.addresses) {
+      writer.uint32(34).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveUsers {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveUsers } as MsgRemoveUsers;
+    message.addresses = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.documentId = reader.string();
+          break;
+        case 3:
+          message.role = reader.string();
+          break;
+        case 4:
+          message.addresses.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRemoveUsers {
+    const message = { ...baseMsgRemoveUsers } as MsgRemoveUsers;
+    message.addresses = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = String(object.documentId);
+    } else {
+      message.documentId = "";
+    }
+    if (object.role !== undefined && object.role !== null) {
+      message.role = String(object.role);
+    } else {
+      message.role = "";
+    }
+    if (object.addresses !== undefined && object.addresses !== null) {
+      for (const e of object.addresses) {
+        message.addresses.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRemoveUsers): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.documentId !== undefined && (obj.documentId = message.documentId);
+    message.role !== undefined && (obj.role = message.role);
+    if (message.addresses) {
+      obj.addresses = message.addresses.map((e) => e);
+    } else {
+      obj.addresses = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRemoveUsers>): MsgRemoveUsers {
+    const message = { ...baseMsgRemoveUsers } as MsgRemoveUsers;
+    message.addresses = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = object.documentId;
+    } else {
+      message.documentId = "";
+    }
+    if (object.role !== undefined && object.role !== null) {
+      message.role = object.role;
+    } else {
+      message.role = "";
+    }
+    if (object.addresses !== undefined && object.addresses !== null) {
+      for (const e of object.addresses) {
+        message.addresses.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgRemoveUsersResponse: object = { id: 0 };
+
+export const MsgRemoveUsersResponse = {
+  encode(
+    message: MsgRemoveUsersResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveUsersResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveUsersResponse } as MsgRemoveUsersResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRemoveUsersResponse {
+    const message = { ...baseMsgRemoveUsersResponse } as MsgRemoveUsersResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRemoveUsersResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgRemoveUsersResponse>
+  ): MsgRemoveUsersResponse {
+    const message = { ...baseMsgRemoveUsersResponse } as MsgRemoveUsersResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgEditFiles: object = { creator: "", documentId: "", files: "" };
+
+export const MsgEditFiles = {
+  encode(message: MsgEditFiles, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.documentId !== "") {
+      writer.uint32(18).string(message.documentId);
+    }
+    for (const v of message.files) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditFiles {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditFiles } as MsgEditFiles;
+    message.files = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.documentId = reader.string();
+          break;
+        case 3:
+          message.files.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgEditFiles {
+    const message = { ...baseMsgEditFiles } as MsgEditFiles;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = String(object.documentId);
+    } else {
+      message.documentId = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgEditFiles): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.documentId !== undefined && (obj.documentId = message.documentId);
+    if (message.files) {
+      obj.files = message.files.map((e) => e);
+    } else {
+      obj.files = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgEditFiles>): MsgEditFiles {
+    const message = { ...baseMsgEditFiles } as MsgEditFiles;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = object.documentId;
+    } else {
+      message.documentId = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgEditFilesResponse: object = {};
+
+export const MsgEditFilesResponse = {
+  encode(_: MsgEditFilesResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditFilesResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditFilesResponse } as MsgEditFilesResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgEditFilesResponse {
+    const message = { ...baseMsgEditFilesResponse } as MsgEditFilesResponse;
+    return message;
+  },
+
+  toJSON(_: MsgEditFilesResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgEditFilesResponse>): MsgEditFilesResponse {
+    const message = { ...baseMsgEditFilesResponse } as MsgEditFilesResponse;
+    return message;
+  },
+};
+
+const baseMsgSignDocument: object = { creator: "", documentId: "", files: "" };
+
+export const MsgSignDocument = {
+  encode(message: MsgSignDocument, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.documentId !== "") {
+      writer.uint32(18).string(message.documentId);
+    }
+    for (const v of message.files) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSignDocument {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSignDocument } as MsgSignDocument;
+    message.files = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.documentId = reader.string();
+          break;
+        case 3:
+          message.files.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSignDocument {
+    const message = { ...baseMsgSignDocument } as MsgSignDocument;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = String(object.documentId);
+    } else {
+      message.documentId = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSignDocument): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.documentId !== undefined && (obj.documentId = message.documentId);
+    if (message.files) {
+      obj.files = message.files.map((e) => e);
+    } else {
+      obj.files = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSignDocument>): MsgSignDocument {
+    const message = { ...baseMsgSignDocument } as MsgSignDocument;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.documentId !== undefined && object.documentId !== null) {
+      message.documentId = object.documentId;
+    } else {
+      message.documentId = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgSignDocumentResponse: object = {};
+
+export const MsgSignDocumentResponse = {
+  encode(_: MsgSignDocumentResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSignDocumentResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSignDocumentResponse,
+    } as MsgSignDocumentResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSignDocumentResponse {
+    const message = {
+      ...baseMsgSignDocumentResponse,
+    } as MsgSignDocumentResponse;
+    return message;
+  },
+
+  toJSON(_: MsgSignDocumentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgSignDocumentResponse>
+  ): MsgSignDocumentResponse {
+    const message = {
+      ...baseMsgSignDocumentResponse,
+    } as MsgSignDocumentResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddCertificate(
     request: MsgAddCertificate
   ): Promise<MsgAddCertificateResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateDocument(
     request: MsgCreateDocument
   ): Promise<MsgCreateDocumentResponse>;
+  AddUsers(request: MsgAddUsers): Promise<MsgAddUsersResponse>;
+  RemoveUsers(request: MsgRemoveUsers): Promise<MsgRemoveUsersResponse>;
+  EditFiles(request: MsgEditFiles): Promise<MsgEditFilesResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SignDocument(request: MsgSignDocument): Promise<MsgSignDocumentResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -370,6 +1042,36 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateDocumentResponse.decode(new Reader(data))
+    );
+  }
+
+  AddUsers(request: MsgAddUsers): Promise<MsgAddUsersResponse> {
+    const data = MsgAddUsers.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "AddUsers", data);
+    return promise.then((data) => MsgAddUsersResponse.decode(new Reader(data)));
+  }
+
+  RemoveUsers(request: MsgRemoveUsers): Promise<MsgRemoveUsersResponse> {
+    const data = MsgRemoveUsers.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "RemoveUsers", data);
+    return promise.then((data) =>
+      MsgRemoveUsersResponse.decode(new Reader(data))
+    );
+  }
+
+  EditFiles(request: MsgEditFiles): Promise<MsgEditFilesResponse> {
+    const data = MsgEditFiles.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "EditFiles", data);
+    return promise.then((data) =>
+      MsgEditFilesResponse.decode(new Reader(data))
+    );
+  }
+
+  SignDocument(request: MsgSignDocument): Promise<MsgSignDocumentResponse> {
+    const data = MsgSignDocument.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "SignDocument", data);
+    return promise.then((data) =>
+      MsgSignDocumentResponse.decode(new Reader(data))
     );
   }
 }

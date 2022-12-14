@@ -9,6 +9,10 @@ option go_package = "thesis/x/thesis/types";
 service Msg {
       rpc AddCertificate(MsgAddCertificate) returns (MsgAddCertificateResponse);
   rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
+  rpc AddUsers(MsgAddUsers) returns (MsgAddUsersResponse);
+  rpc RemoveUsers(MsgRemoveUsers) returns (MsgRemoveUsersResponse);
+  rpc EditFiles(MsgEditFiles) returns (MsgEditFilesResponse);
+  rpc SignDocument(MsgSignDocument) returns (MsgSignDocumentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -28,6 +32,46 @@ message MsgCreateDocument {
 
 message MsgCreateDocumentResponse {
   uint64 id = 1;
+}
+
+message MsgAddUsers {
+  string creator = 1;
+  string documentId = 2;
+  string role = 3;
+  repeated string addresses = 4;
+}
+
+message MsgAddUsersResponse {
+  uint64 id = 1;
+}
+
+message MsgRemoveUsers {
+  string creator = 1;
+  string documentId = 2;
+  string role = 3;
+  repeated string addresses = 4;
+}
+
+message MsgRemoveUsersResponse {
+  uint64 id = 1;
+}
+
+message MsgEditFiles {
+  string creator = 1;
+  string documentId = 2;
+  repeated string files = 3;
+}
+
+message MsgEditFilesResponse {
+}
+
+message MsgSignDocument {
+  string creator = 1;
+  string documentId = 2;
+  repeated string files = 3;
+}
+
+message MsgSignDocumentResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

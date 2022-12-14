@@ -45,10 +45,24 @@ export interface ThesisMsgAddCertificateResponse {
   id?: string;
 }
 
+export interface ThesisMsgAddUsersResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export interface ThesisMsgCreateDocumentResponse {
   /** @format uint64 */
   id?: string;
 }
+
+export type ThesisMsgEditFilesResponse = object;
+
+export interface ThesisMsgRemoveUsersResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export type ThesisMsgSignDocumentResponse = object;
 
 /**
  * Params defines the parameters for the module.

@@ -8,5 +8,6 @@ import (
 
 // x/thesis module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrCanNotModifyRole = sdkerrors.Register(ModuleName, 1100, "Can't modify role during current state")
+	ErrInvalidRole      = sdkerrors.Register(ModuleName, 1200, "Role doesn't exists")
 )
