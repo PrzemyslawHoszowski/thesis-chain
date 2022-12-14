@@ -63,6 +63,7 @@ message MsgEditFiles {
 }
 
 message MsgEditFilesResponse {
+  uint64 id = 1;
 }
 
 message MsgSignDocument {
@@ -72,6 +73,7 @@ message MsgSignDocument {
 }
 
 message MsgSignDocumentResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

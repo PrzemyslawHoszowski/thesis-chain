@@ -52658,6 +52658,10 @@ definitions:
         format: uint64
   thesis.thesis.MsgEditFilesResponse:
     type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   thesis.thesis.MsgRemoveUsersResponse:
     type: object
     properties:
@@ -52666,6 +52670,10 @@ definitions:
         format: uint64
   thesis.thesis.MsgSignDocumentResponse:
     type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   thesis.thesis.Params:
     type: object
     description: Params defines the parameters for the module.

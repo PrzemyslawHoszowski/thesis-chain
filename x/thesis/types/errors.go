@@ -10,4 +10,5 @@ import (
 var (
 	ErrCanNotModifyRole = sdkerrors.Register(ModuleName, 1100, "Can't modify role during current state")
 	ErrInvalidRole      = sdkerrors.Register(ModuleName, 1200, "Role doesn't exists")
+	ErrAlreadySigned    = sdkerrors.Register(ModuleName, 1300, "Already signed")
 )

@@ -51,7 +51,9 @@ export interface MsgEditFiles {
   files: string[];
 }
 
-export interface MsgEditFilesResponse {}
+export interface MsgEditFilesResponse {
+  id: number;
+}
 
 export interface MsgSignDocument {
   creator: string;
@@ -59,7 +61,9 @@ export interface MsgSignDocument {
   files: string[];
 }
 
-export interface MsgSignDocumentResponse {}
+export interface MsgSignDocumentResponse {
+  id: number;
+}
 
 const baseMsgAddCertificate: object = { creator: "", hash: "", address: "" };
 
@@ -817,10 +821,16 @@ export const MsgEditFiles = {
   },
 };
 
-const baseMsgEditFilesResponse: object = {};
+const baseMsgEditFilesResponse: object = { id: 0 };
 
 export const MsgEditFilesResponse = {
-  encode(_: MsgEditFilesResponse, writer: Writer = Writer.create()): Writer {
+  encode(
+    message: MsgEditFilesResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     return writer;
   },
 
@@ -831,6 +841,9 @@ export const MsgEditFilesResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -839,18 +852,29 @@ export const MsgEditFilesResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgEditFilesResponse {
+  fromJSON(object: any): MsgEditFilesResponse {
     const message = { ...baseMsgEditFilesResponse } as MsgEditFilesResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
-  toJSON(_: MsgEditFilesResponse): unknown {
+  toJSON(message: MsgEditFilesResponse): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
-  fromPartial(_: DeepPartial<MsgEditFilesResponse>): MsgEditFilesResponse {
+  fromPartial(object: DeepPartial<MsgEditFilesResponse>): MsgEditFilesResponse {
     const message = { ...baseMsgEditFilesResponse } as MsgEditFilesResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
@@ -951,10 +975,16 @@ export const MsgSignDocument = {
   },
 };
 
-const baseMsgSignDocumentResponse: object = {};
+const baseMsgSignDocumentResponse: object = { id: 0 };
 
 export const MsgSignDocumentResponse = {
-  encode(_: MsgSignDocumentResponse, writer: Writer = Writer.create()): Writer {
+  encode(
+    message: MsgSignDocumentResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     return writer;
   },
 
@@ -967,6 +997,9 @@ export const MsgSignDocumentResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -975,24 +1008,35 @@ export const MsgSignDocumentResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgSignDocumentResponse {
+  fromJSON(object: any): MsgSignDocumentResponse {
     const message = {
       ...baseMsgSignDocumentResponse,
     } as MsgSignDocumentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
-  toJSON(_: MsgSignDocumentResponse): unknown {
+  toJSON(message: MsgSignDocumentResponse): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgSignDocumentResponse>
+    object: DeepPartial<MsgSignDocumentResponse>
   ): MsgSignDocumentResponse {
     const message = {
       ...baseMsgSignDocumentResponse,
     } as MsgSignDocumentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
