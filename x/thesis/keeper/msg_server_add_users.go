@@ -27,13 +27,14 @@ func verifyUsersChange(document types.Document, role string, creator string, add
 	}
 	if !canModifyRole(document.State, role) {
 		err := fmt.Sprintf("Cannot modify role: %s in state: %s:", role, document.State)
-		return false, sdkerrors.Wrap(types.ErrCanNotModifyRole, err)
+		return false, sdkerrors.Wrap(types.ErrInvalidState, err)
 	}
 	// check if passed addresses are valid
 	for _, s := range addresses {
-		_, error := sdk.ValAddressFromBech32(s)
+		_, error := sdk.AccAddressFromBech32(s)
 		if error != nil {
-			return false, error
+
+			return false, sdkerrors.Wrap(types.ErrInvalidRole, "Role can only contain addresses")
 		}
 	}
 	return true, nil
