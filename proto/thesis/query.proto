@@ -8,6 +8,7 @@ import "thesis/params.proto";
 import "thesis/certificate.proto";
 import "thesis/document.proto";
 import "thesis/system_info.proto";
+import "thesis/authorize_account.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "thesis/x/thesis/types";
@@ -37,6 +38,16 @@ service Query {
 	rpc SystemInfo(QueryGetSystemInfoRequest) returns (QueryGetSystemInfoResponse) {
 		option (google.api.http).get = "/thesis/thesis/system_info";
 	}
+// Queries a AuthorizeAccount by index.
+	rpc AuthorizeAccount(QueryGetAuthorizeAccountRequest) returns (QueryGetAuthorizeAccountResponse) {
+		option (google.api.http).get = "/thesis/thesis/authorize_account/{index}";
+	}
+
+	// Queries a list of AuthorizeAccount items.
+	rpc AuthorizeAccountAll(QueryAllAuthorizeAccountRequest) returns (QueryAllAuthorizeAccountResponse) {
+		option (google.api.http).get = "/thesis/thesis/authorize_account";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -82,4 +93,22 @@ message QueryGetSystemInfoRequest {}
 message QueryGetSystemInfoResponse {
 	SystemInfo SystemInfo = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetAuthorizeAccountRequest {
+	  string index = 1;
+
+}
+
+message QueryGetAuthorizeAccountResponse {
+	AuthorizeAccount authorizeAccount = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAuthorizeAccountRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAuthorizeAccountResponse {
+	repeated AuthorizeAccount authorizeAccount = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3

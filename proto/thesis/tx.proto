@@ -14,6 +14,7 @@ service Msg {
   rpc EditFiles(MsgEditFiles) returns (MsgEditFilesResponse);
   rpc SignDocument(MsgSignDocument) returns (MsgSignDocumentResponse);
   rpc RejectSignature(MsgRejectSignature) returns (MsgRejectSignatureResponse);
+  rpc Authorize(MsgAuthorize) returns (MsgAuthorizeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -83,6 +84,15 @@ message MsgRejectSignature {
 }
 
 message MsgRejectSignatureResponse {
+  uint64 id = 1;
+}
+
+message MsgAuthorize {
+  string creator = 1;
+  string accountId = 2;
+}
+
+message MsgAuthorizeResponse {
   uint64 id = 1;
 }
 

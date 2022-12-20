@@ -74,6 +74,15 @@ export interface MsgRejectSignatureResponse {
   id: Long;
 }
 
+export interface MsgAuthorize {
+  creator: string;
+  accountId: string;
+}
+
+export interface MsgAuthorizeResponse {
+  id: Long;
+}
+
 function createBaseMsgAddCertificate(): MsgAddCertificate {
   return { creator: "", hash: "", address: "" };
 }
@@ -1032,6 +1041,130 @@ export const MsgRejectSignatureResponse = {
   },
 };
 
+function createBaseMsgAuthorize(): MsgAuthorize {
+  return { creator: "", accountId: "" };
+}
+
+export const MsgAuthorize = {
+  encode(
+    message: MsgAuthorize,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.accountId !== "") {
+      writer.uint32(18).string(message.accountId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAuthorize {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAuthorize();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.accountId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAuthorize {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+    };
+  },
+
+  toJSON(message: MsgAuthorize): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgAuthorize>, I>>(
+    object: I
+  ): MsgAuthorize {
+    const message = createBaseMsgAuthorize();
+    message.creator = object.creator ?? "";
+    message.accountId = object.accountId ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgAuthorizeResponse(): MsgAuthorizeResponse {
+  return { id: Long.UZERO };
+}
+
+export const MsgAuthorizeResponse = {
+  encode(
+    message: MsgAuthorizeResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MsgAuthorizeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAuthorizeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint64() as Long;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAuthorizeResponse {
+    return {
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+    };
+  },
+
+  toJSON(message: MsgAuthorizeResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined &&
+      (obj.id = (message.id || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgAuthorizeResponse>, I>>(
+    object: I
+  ): MsgAuthorizeResponse {
+    const message = createBaseMsgAuthorizeResponse();
+    message.id =
+      object.id !== undefined && object.id !== null
+        ? Long.fromValue(object.id)
+        : Long.UZERO;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddCertificate(
@@ -1044,10 +1177,11 @@ export interface Msg {
   RemoveUsers(request: MsgRemoveUsers): Promise<MsgRemoveUsersResponse>;
   EditFiles(request: MsgEditFiles): Promise<MsgEditFilesResponse>;
   SignDocument(request: MsgSignDocument): Promise<MsgSignDocumentResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RejectSignature(
     request: MsgRejectSignature
   ): Promise<MsgRejectSignatureResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Authorize(request: MsgAuthorize): Promise<MsgAuthorizeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1061,6 +1195,7 @@ export class MsgClientImpl implements Msg {
     this.EditFiles = this.EditFiles.bind(this);
     this.SignDocument = this.SignDocument.bind(this);
     this.RejectSignature = this.RejectSignature.bind(this);
+    this.Authorize = this.Authorize.bind(this);
   }
   AddCertificate(
     request: MsgAddCertificate
@@ -1133,6 +1268,14 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgRejectSignatureResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  Authorize(request: MsgAuthorize): Promise<MsgAuthorizeResponse> {
+    const data = MsgAuthorize.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "Authorize", data);
+    return promise.then((data) =>
+      MsgAuthorizeResponse.decode(new _m0.Reader(data))
     );
   }
 }

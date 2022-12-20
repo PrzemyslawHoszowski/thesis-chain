@@ -6,10 +6,11 @@ export const protobufPackage = "thesis.thesis";
 
 export interface SystemInfo {
   nextDocumentId: Long;
+  nextAuthorizeId: Long;
 }
 
 function createBaseSystemInfo(): SystemInfo {
-  return { nextDocumentId: Long.UZERO };
+  return { nextDocumentId: Long.UZERO, nextAuthorizeId: Long.UZERO };
 }
 
 export const SystemInfo = {
@@ -19,6 +20,9 @@ export const SystemInfo = {
   ): _m0.Writer {
     if (!message.nextDocumentId.isZero()) {
       writer.uint32(8).uint64(message.nextDocumentId);
+    }
+    if (!message.nextAuthorizeId.isZero()) {
+      writer.uint32(16).uint64(message.nextAuthorizeId);
     }
     return writer;
   },
@@ -33,6 +37,9 @@ export const SystemInfo = {
         case 1:
           message.nextDocumentId = reader.uint64() as Long;
           break;
+        case 2:
+          message.nextAuthorizeId = reader.uint64() as Long;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -46,6 +53,9 @@ export const SystemInfo = {
       nextDocumentId: isSet(object.nextDocumentId)
         ? Long.fromValue(object.nextDocumentId)
         : Long.UZERO,
+      nextAuthorizeId: isSet(object.nextAuthorizeId)
+        ? Long.fromValue(object.nextAuthorizeId)
+        : Long.UZERO,
     };
   },
 
@@ -53,6 +63,10 @@ export const SystemInfo = {
     const obj: any = {};
     message.nextDocumentId !== undefined &&
       (obj.nextDocumentId = (message.nextDocumentId || Long.UZERO).toString());
+    message.nextAuthorizeId !== undefined &&
+      (obj.nextAuthorizeId = (
+        message.nextAuthorizeId || Long.UZERO
+      ).toString());
     return obj;
   },
 
@@ -63,6 +77,10 @@ export const SystemInfo = {
     message.nextDocumentId =
       object.nextDocumentId !== undefined && object.nextDocumentId !== null
         ? Long.fromValue(object.nextDocumentId)
+        : Long.UZERO;
+    message.nextAuthorizeId =
+      object.nextAuthorizeId !== undefined && object.nextAuthorizeId !== null
+        ? Long.fromValue(object.nextAuthorizeId)
         : Long.UZERO;
     return message;
   },

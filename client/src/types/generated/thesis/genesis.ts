@@ -3,6 +3,7 @@ import { Params } from "./params";
 import { SystemInfo } from "./system_info";
 import Long from "long";
 import { Document } from "./document";
+import { AuthorizeAccount } from "./authorize_account";
 import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "thesis.thesis";
@@ -11,12 +12,18 @@ export const protobufPackage = "thesis.thesis";
 export interface GenesisState {
   params?: Params;
   documentList: Document[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   systemInfo?: SystemInfo;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  authorizeAccountList: AuthorizeAccount[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, documentList: [], systemInfo: undefined };
+  return {
+    params: undefined,
+    documentList: [],
+    systemInfo: undefined,
+    authorizeAccountList: [],
+  };
 }
 
 export const GenesisState = {
@@ -32,6 +39,9 @@ export const GenesisState = {
     }
     if (message.systemInfo !== undefined) {
       SystemInfo.encode(message.systemInfo, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.authorizeAccountList) {
+      AuthorizeAccount.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -52,6 +62,11 @@ export const GenesisState = {
         case 3:
           message.systemInfo = SystemInfo.decode(reader, reader.uint32());
           break;
+        case 4:
+          message.authorizeAccountList.push(
+            AuthorizeAccount.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -69,6 +84,11 @@ export const GenesisState = {
       systemInfo: isSet(object.systemInfo)
         ? SystemInfo.fromJSON(object.systemInfo)
         : undefined,
+      authorizeAccountList: Array.isArray(object?.authorizeAccountList)
+        ? object.authorizeAccountList.map((e: any) =>
+            AuthorizeAccount.fromJSON(e)
+          )
+        : [],
     };
   },
 
@@ -87,6 +107,13 @@ export const GenesisState = {
       (obj.systemInfo = message.systemInfo
         ? SystemInfo.toJSON(message.systemInfo)
         : undefined);
+    if (message.authorizeAccountList) {
+      obj.authorizeAccountList = message.authorizeAccountList.map((e) =>
+        e ? AuthorizeAccount.toJSON(e) : undefined
+      );
+    } else {
+      obj.authorizeAccountList = [];
+    }
     return obj;
   },
 
@@ -104,6 +131,10 @@ export const GenesisState = {
       object.systemInfo !== undefined && object.systemInfo !== null
         ? SystemInfo.fromPartial(object.systemInfo)
         : undefined;
+    message.authorizeAccountList =
+      object.authorizeAccountList?.map((e) =>
+        AuthorizeAccount.fromPartial(e)
+      ) || [];
     return message;
   },
 };

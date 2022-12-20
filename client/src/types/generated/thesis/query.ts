@@ -6,6 +6,7 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Document } from "./document";
 import { SystemInfo } from "./system_info";
+import { AuthorizeAccount } from "./authorize_account";
 import Long from "long";
 import { Certificate } from "./certificate";
 import _m0 from "protobufjs/minimal";
@@ -51,6 +52,23 @@ export interface QueryGetSystemInfoRequest {}
 
 export interface QueryGetSystemInfoResponse {
   SystemInfo?: SystemInfo;
+}
+
+export interface QueryGetAuthorizeAccountRequest {
+  index: string;
+}
+
+export interface QueryGetAuthorizeAccountResponse {
+  authorizeAccount?: AuthorizeAccount;
+}
+
+export interface QueryAllAuthorizeAccountRequest {
+  pagination?: PageRequest;
+}
+
+export interface QueryAllAuthorizeAccountResponse {
+  authorizeAccount: AuthorizeAccount[];
+  pagination?: PageResponse;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -691,6 +709,288 @@ export const QueryGetSystemInfoResponse = {
   },
 };
 
+function createBaseQueryGetAuthorizeAccountRequest(): QueryGetAuthorizeAccountRequest {
+  return { index: "" };
+}
+
+export const QueryGetAuthorizeAccountRequest = {
+  encode(
+    message: QueryGetAuthorizeAccountRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryGetAuthorizeAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetAuthorizeAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAuthorizeAccountRequest {
+    return {
+      index: isSet(object.index) ? String(object.index) : "",
+    };
+  },
+
+  toJSON(message: QueryGetAuthorizeAccountRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetAuthorizeAccountRequest>, I>>(
+    object: I
+  ): QueryGetAuthorizeAccountRequest {
+    const message = createBaseQueryGetAuthorizeAccountRequest();
+    message.index = object.index ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetAuthorizeAccountResponse(): QueryGetAuthorizeAccountResponse {
+  return { authorizeAccount: undefined };
+}
+
+export const QueryGetAuthorizeAccountResponse = {
+  encode(
+    message: QueryGetAuthorizeAccountResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.authorizeAccount !== undefined) {
+      AuthorizeAccount.encode(
+        message.authorizeAccount,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryGetAuthorizeAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetAuthorizeAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authorizeAccount = AuthorizeAccount.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAuthorizeAccountResponse {
+    return {
+      authorizeAccount: isSet(object.authorizeAccount)
+        ? AuthorizeAccount.fromJSON(object.authorizeAccount)
+        : undefined,
+    };
+  },
+
+  toJSON(message: QueryGetAuthorizeAccountResponse): unknown {
+    const obj: any = {};
+    message.authorizeAccount !== undefined &&
+      (obj.authorizeAccount = message.authorizeAccount
+        ? AuthorizeAccount.toJSON(message.authorizeAccount)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<QueryGetAuthorizeAccountResponse>, I>
+  >(object: I): QueryGetAuthorizeAccountResponse {
+    const message = createBaseQueryGetAuthorizeAccountResponse();
+    message.authorizeAccount =
+      object.authorizeAccount !== undefined && object.authorizeAccount !== null
+        ? AuthorizeAccount.fromPartial(object.authorizeAccount)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllAuthorizeAccountRequest(): QueryAllAuthorizeAccountRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllAuthorizeAccountRequest = {
+  encode(
+    message: QueryAllAuthorizeAccountRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryAllAuthorizeAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllAuthorizeAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAuthorizeAccountRequest {
+    return {
+      pagination: isSet(object.pagination)
+        ? PageRequest.fromJSON(object.pagination)
+        : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllAuthorizeAccountRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllAuthorizeAccountRequest>, I>>(
+    object: I
+  ): QueryAllAuthorizeAccountRequest {
+    const message = createBaseQueryAllAuthorizeAccountRequest();
+    message.pagination =
+      object.pagination !== undefined && object.pagination !== null
+        ? PageRequest.fromPartial(object.pagination)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllAuthorizeAccountResponse(): QueryAllAuthorizeAccountResponse {
+  return { authorizeAccount: [], pagination: undefined };
+}
+
+export const QueryAllAuthorizeAccountResponse = {
+  encode(
+    message: QueryAllAuthorizeAccountResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.authorizeAccount) {
+      AuthorizeAccount.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryAllAuthorizeAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllAuthorizeAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authorizeAccount.push(
+            AuthorizeAccount.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAuthorizeAccountResponse {
+    return {
+      authorizeAccount: Array.isArray(object?.authorizeAccount)
+        ? object.authorizeAccount.map((e: any) => AuthorizeAccount.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination)
+        ? PageResponse.fromJSON(object.pagination)
+        : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllAuthorizeAccountResponse): unknown {
+    const obj: any = {};
+    if (message.authorizeAccount) {
+      obj.authorizeAccount = message.authorizeAccount.map((e) =>
+        e ? AuthorizeAccount.toJSON(e) : undefined
+      );
+    } else {
+      obj.authorizeAccount = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<
+    I extends Exact<DeepPartial<QueryAllAuthorizeAccountResponse>, I>
+  >(object: I): QueryAllAuthorizeAccountResponse {
+    const message = createBaseQueryAllAuthorizeAccountResponse();
+    message.authorizeAccount =
+      object.authorizeAccount?.map((e) => AuthorizeAccount.fromPartial(e)) ||
+      [];
+    message.pagination =
+      object.pagination !== undefined && object.pagination !== null
+        ? PageResponse.fromPartial(object.pagination)
+        : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -709,6 +1009,14 @@ export interface Query {
   SystemInfo(
     request: QueryGetSystemInfoRequest
   ): Promise<QueryGetSystemInfoResponse>;
+  /** Queries a AuthorizeAccount by index. */
+  AuthorizeAccount(
+    request: QueryGetAuthorizeAccountRequest
+  ): Promise<QueryGetAuthorizeAccountResponse>;
+  /** Queries a list of AuthorizeAccount items. */
+  AuthorizeAccountAll(
+    request: QueryAllAuthorizeAccountRequest
+  ): Promise<QueryAllAuthorizeAccountResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -720,6 +1028,8 @@ export class QueryClientImpl implements Query {
     this.Document = this.Document.bind(this);
     this.DocumentAll = this.DocumentAll.bind(this);
     this.SystemInfo = this.SystemInfo.bind(this);
+    this.AuthorizeAccount = this.AuthorizeAccount.bind(this);
+    this.AuthorizeAccountAll = this.AuthorizeAccountAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -774,6 +1084,34 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("thesis.thesis.Query", "SystemInfo", data);
     return promise.then((data) =>
       QueryGetSystemInfoResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  AuthorizeAccount(
+    request: QueryGetAuthorizeAccountRequest
+  ): Promise<QueryGetAuthorizeAccountResponse> {
+    const data = QueryGetAuthorizeAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "thesis.thesis.Query",
+      "AuthorizeAccount",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetAuthorizeAccountResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  AuthorizeAccountAll(
+    request: QueryAllAuthorizeAccountRequest
+  ): Promise<QueryAllAuthorizeAccountResponse> {
+    const data = QueryAllAuthorizeAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "thesis.thesis.Query",
+      "AuthorizeAccountAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllAuthorizeAccountResponse.decode(new _m0.Reader(data))
     );
   }
 }

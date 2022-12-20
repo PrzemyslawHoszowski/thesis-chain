@@ -15,6 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgEditFiles{}, "thesis/EditFiles", nil)
 	cdc.RegisterConcrete(&MsgSignDocument{}, "thesis/SignDocument", nil)
 	cdc.RegisterConcrete(&MsgRejectSignature{}, "thesis/RejectSignature", nil)
+	cdc.RegisterConcrete(&MsgAuthorize{}, "thesis/Authorize", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +40,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRejectSignature{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAuthorize{},
 	)
 	// this line is used by starport scaffolding # 3
 

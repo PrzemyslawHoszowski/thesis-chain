@@ -33,6 +33,14 @@ func TestGenesisState_Validate(t *testing.T) {
 				SystemInfo: &types.SystemInfo{
 					NextDocumentId: 60,
 				},
+				AuthorizeAccountList: []types.AuthorizeAccount{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -41,6 +49,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated document",
 			genState: &types.GenesisState{
 				DocumentList: []types.Document{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated authorizeAccount",
+			genState: &types.GenesisState{
+				AuthorizeAccountList: []types.AuthorizeAccount{
 					{
 						Index: "0",
 					},

@@ -17,6 +17,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.SystemInfo != nil {
 		k.SetSystemInfo(ctx, *genState.SystemInfo)
 	}
+	// Set all the authorizeAccount
+	for _, elem := range genState.AuthorizeAccountList {
+		k.SetAuthorizeAccount(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -32,6 +36,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.SystemInfo = &systemInfo
 	}
+	genesis.AuthorizeAccountList = k.GetAllAuthorizeAccount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

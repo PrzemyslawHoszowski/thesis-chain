@@ -1,0 +1,12 @@
+syntax = "proto3";
+package thesis.thesis;
+
+option go_package = "thesis/x/thesis/types";
+
+message AuthorizeAccount {
+  string index = 1; 
+  string accountId = 2; 
+  string address = 3; 
+  
+}
+

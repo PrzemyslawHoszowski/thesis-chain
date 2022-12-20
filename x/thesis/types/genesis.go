@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 		SystemInfo: &SystemInfo{
 			NextDocumentId: uint64(DefaultIndex),
 		},
+		AuthorizeAccountList: []AuthorizeAccount{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -31,6 +32,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for document")
 		}
 		documentIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in authorizeAccount
+	authorizeAccountIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AuthorizeAccountList {
+		index := string(AuthorizeAccountKey(elem.Index))
+		if _, ok := authorizeAccountIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for authorizeAccount")
+		}
+		authorizeAccountIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
