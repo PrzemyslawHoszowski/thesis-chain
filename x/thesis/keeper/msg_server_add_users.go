@@ -8,6 +8,7 @@ import (
 	slices2 "github.com/influxdata/influxdb/pkg/slices"
 	"k8s.io/utils/strings/slices"
 	"strconv"
+	"strings"
 	"thesis/x/thesis/types"
 )
 
@@ -50,19 +51,34 @@ func (k msgServer) AddUsers(goCtx context.Context, msg *types.MsgAddUsers) (*typ
 	if !isValid {
 		return nil, err
 	}
+	var diff []string
 
 	switch msg.Role {
 	case "Admins":
 		document.Admins = slices2.Union(document.Admins, msg.Addresses, false)
+		diff = difference(msg.Addresses, document.Admins)
 	case "Editors":
 		document.Editors = slices2.Union(document.Editors, msg.Addresses, false)
+		diff = difference(msg.Addresses, document.Admins)
 	case "Signers":
 		document.Signers = slices2.Union(document.Signers, msg.Addresses, false)
+		diff = difference(msg.Addresses, document.Admins)
 	case "Viewers":
 		document.Viewers = slices2.Union(document.Viewers, msg.Addresses, false)
+		diff = difference(msg.Addresses, document.Admins)
 	}
 
 	k.SetDocument(ctx, document)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.DocumentUsersAdded,
+			sdk.NewAttribute(types.Caller, msg.Creator),
+			sdk.NewAttribute(types.DocumentUsersAdded, strings.Join(diff, ",")),
+			sdk.NewAttribute(types.DocumentRole, msg.Role),
+			sdk.NewAttribute(types.DocumentId, msg.DocumentId),
+		),
+	)
+
 	index, _ := strconv.ParseUint(document.Index, 10, 64)
 	return &types.MsgAddUsersResponse{Id: index}, nil
 }

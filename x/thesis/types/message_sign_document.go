@@ -9,11 +9,11 @@ const TypeMsgSignDocument = "sign_document"
 
 var _ sdk.Msg = &MsgSignDocument{}
 
-func NewMsgSignDocument(creator string, documentId string, files []string) *MsgSignDocument {
+func NewMsgSignDocument(creator string, documentId string, lastEditHeight uint64) *MsgSignDocument {
 	return &MsgSignDocument{
-		Creator:    creator,
-		DocumentId: documentId,
-		Files:      files,
+		Creator:        creator,
+		DocumentId:     documentId,
+		LastEditHeight: lastEditHeight,
 	}
 }
 

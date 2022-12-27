@@ -71,7 +71,7 @@ message MsgEditFilesResponse {
 message MsgSignDocument {
   string creator = 1;
   string documentId = 2;
-  repeated string files = 3;
+  uint64 lastEditHeight = 3;
 }
 
 message MsgSignDocumentResponse {

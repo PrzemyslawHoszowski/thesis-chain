@@ -7,7 +7,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"strings"
 	"thesis/x/thesis/types"
 )
 
@@ -20,7 +19,7 @@ func CmdSignDocument() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDocumentId := args[0]
-			argFiles := strings.Split(args[1], listSeparator)
+			argHeight, _ := strconv.ParseUint(args[1], 0, 64)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +29,7 @@ func CmdSignDocument() *cobra.Command {
 			msg := types.NewMsgSignDocument(
 				clientCtx.GetFromAddress().String(),
 				argDocumentId,
-				argFiles,
+				argHeight,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

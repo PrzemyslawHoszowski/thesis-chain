@@ -41,6 +41,14 @@ func (k msgServer) Authorize(goCtx context.Context, msg *types.MsgAuthorize) (*t
 	systemInfo.NextAuthorizeId++
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.EntityAuthorized,
+			sdk.NewAttribute(types.Caller, msg.Creator),
+			sdk.NewAttribute(types.AccountId, msg.AccountId),
+			sdk.NewAttribute(types.AuthorizationId, newIndex),
+		),
+	)
+
 	return &types.MsgAuthorizeResponse{Id: newIndexInt}, nil
 
 }

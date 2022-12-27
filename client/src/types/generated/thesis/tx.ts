@@ -58,7 +58,7 @@ export interface MsgEditFilesResponse {
 export interface MsgSignDocument {
   creator: string;
   documentId: string;
-  files: string[];
+  lastEditHeight: Long;
 }
 
 export interface MsgSignDocumentResponse {
@@ -779,7 +779,7 @@ export const MsgEditFilesResponse = {
 };
 
 function createBaseMsgSignDocument(): MsgSignDocument {
-  return { creator: "", documentId: "", files: [] };
+  return { creator: "", documentId: "", lastEditHeight: Long.UZERO };
 }
 
 export const MsgSignDocument = {
@@ -793,8 +793,8 @@ export const MsgSignDocument = {
     if (message.documentId !== "") {
       writer.uint32(18).string(message.documentId);
     }
-    for (const v of message.files) {
-      writer.uint32(26).string(v!);
+    if (!message.lastEditHeight.isZero()) {
+      writer.uint32(24).uint64(message.lastEditHeight);
     }
     return writer;
   },
@@ -813,7 +813,7 @@ export const MsgSignDocument = {
           message.documentId = reader.string();
           break;
         case 3:
-          message.files.push(reader.string());
+          message.lastEditHeight = reader.uint64() as Long;
           break;
         default:
           reader.skipType(tag & 7);
@@ -827,9 +827,9 @@ export const MsgSignDocument = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       documentId: isSet(object.documentId) ? String(object.documentId) : "",
-      files: Array.isArray(object?.files)
-        ? object.files.map((e: any) => String(e))
-        : [],
+      lastEditHeight: isSet(object.lastEditHeight)
+        ? Long.fromValue(object.lastEditHeight)
+        : Long.UZERO,
     };
   },
 
@@ -837,11 +837,8 @@ export const MsgSignDocument = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.documentId !== undefined && (obj.documentId = message.documentId);
-    if (message.files) {
-      obj.files = message.files.map((e) => e);
-    } else {
-      obj.files = [];
-    }
+    message.lastEditHeight !== undefined &&
+      (obj.lastEditHeight = (message.lastEditHeight || Long.UZERO).toString());
     return obj;
   },
 
@@ -851,7 +848,10 @@ export const MsgSignDocument = {
     const message = createBaseMsgSignDocument();
     message.creator = object.creator ?? "";
     message.documentId = object.documentId ?? "";
-    message.files = object.files?.map((e) => e) || [];
+    message.lastEditHeight =
+      object.lastEditHeight !== undefined && object.lastEditHeight !== null
+        ? Long.fromValue(object.lastEditHeight)
+        : Long.UZERO;
     return message;
   },
 };

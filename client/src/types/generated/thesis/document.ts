@@ -14,6 +14,7 @@ export interface Document {
   viewers: string[];
   signed: string[];
   rejectionReason: string;
+  lastEditHeight: Long;
 }
 
 function createBaseDocument(): Document {
@@ -27,6 +28,7 @@ function createBaseDocument(): Document {
     viewers: [],
     signed: [],
     rejectionReason: "",
+    lastEditHeight: Long.ZERO,
   };
 }
 
@@ -61,6 +63,9 @@ export const Document = {
     }
     if (message.rejectionReason !== "") {
       writer.uint32(74).string(message.rejectionReason);
+    }
+    if (!message.lastEditHeight.isZero()) {
+      writer.uint32(80).int64(message.lastEditHeight);
     }
     return writer;
   },
@@ -99,6 +104,9 @@ export const Document = {
         case 9:
           message.rejectionReason = reader.string();
           break;
+        case 10:
+          message.lastEditHeight = reader.int64() as Long;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -132,6 +140,9 @@ export const Document = {
       rejectionReason: isSet(object.rejectionReason)
         ? String(object.rejectionReason)
         : "",
+      lastEditHeight: isSet(object.lastEditHeight)
+        ? Long.fromValue(object.lastEditHeight)
+        : Long.ZERO,
     };
   },
 
@@ -171,6 +182,8 @@ export const Document = {
     }
     message.rejectionReason !== undefined &&
       (obj.rejectionReason = message.rejectionReason);
+    message.lastEditHeight !== undefined &&
+      (obj.lastEditHeight = (message.lastEditHeight || Long.ZERO).toString());
     return obj;
   },
 
@@ -185,6 +198,10 @@ export const Document = {
     message.viewers = object.viewers?.map((e) => e) || [];
     message.signed = object.signed?.map((e) => e) || [];
     message.rejectionReason = object.rejectionReason ?? "";
+    message.lastEditHeight =
+      object.lastEditHeight !== undefined && object.lastEditHeight !== null
+        ? Long.fromValue(object.lastEditHeight)
+        : Long.ZERO;
     return message;
   },
 };

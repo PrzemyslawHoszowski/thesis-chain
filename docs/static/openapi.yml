@@ -30852,6 +30852,9 @@ paths:
                         type: string
                     rejectionReason:
                       type: string
+                    lastEditHeight:
+                      type: string
+                      format: int64
               pagination:
                 type: object
                 properties:
@@ -30999,6 +31002,9 @@ paths:
                       type: string
                   rejectionReason:
                     type: string
+                  lastEditHeight:
+                    type: string
+                    format: int64
         default:
           description: An unexpected error response.
           schema:
@@ -52819,6 +52825,9 @@ definitions:
           type: string
       rejectionReason:
         type: string
+      lastEditHeight:
+        type: string
+        format: int64
   thesis.thesis.MsgAddCertificateResponse:
     type: object
     properties:
@@ -52947,6 +52956,9 @@ definitions:
                 type: string
             rejectionReason:
               type: string
+            lastEditHeight:
+              type: string
+              format: int64
       pagination:
         type: object
         properties:
@@ -53062,6 +53074,9 @@ definitions:
               type: string
           rejectionReason:
             type: string
+          lastEditHeight:
+            type: string
+            format: int64
   thesis.thesis.QueryGetSystemInfoResponse:
     type: object
     properties:
