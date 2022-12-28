@@ -4,6 +4,7 @@ import (
 	"context"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"strconv"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"thesis/x/thesis/types"
@@ -36,18 +37,33 @@ func (k msgServer) RemoveUsers(goCtx context.Context, msg *types.MsgRemoveUsers)
 		return nil, err
 	}
 
+	var diff []string
+
 	switch msg.Role {
 	case "Admins":
 		document.Admins = difference(document.Admins, msg.Addresses)
+		diff = difference(document.Admins, msg.Addresses)
 	case "Editors":
 		document.Editors = difference(document.Editors, msg.Addresses)
+		diff = difference(msg.Addresses, document.Editors)
 	case "Signers":
 		document.Signers = difference(document.Signers, msg.Addresses)
+		diff = difference(msg.Addresses, document.Signers)
 	case "Viewers":
 		document.Viewers = difference(document.Viewers, msg.Addresses)
+		diff = difference(msg.Addresses, document.Viewers)
 	}
 
 	k.SetDocument(ctx, document)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.DocumentUsersAdded,
+			sdk.NewAttribute(types.Caller, msg.Creator),
+			sdk.NewAttribute(types.DocumentUsersRemoved, strings.Join(diff, ",")),
+			sdk.NewAttribute(types.DocumentRole, msg.Role),
+			sdk.NewAttribute(types.DocumentId, msg.DocumentId),
+		),
+	)
 	index, _ := strconv.ParseUint(document.Index, 10, 64)
 	return &types.MsgRemoveUsersResponse{Id: index}, nil
 }

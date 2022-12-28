@@ -29,14 +29,15 @@ const (
 )
 
 const (
-	DocumentCreatedEvent = "document-created"
-	DocumentSigned       = "document-signed"
-	DocumentUsersAdded   = "document-users-added"
-	DocumentUsersRemoved = "document-users-removed"
-	DocumentUsers        = "document-users"
-	DocumentRole         = "document-role"
-	DocumentId           = "document-id"
-	DocumentFiles        = "document-files"
+	DocumentCreatedEvent      = "document-created"
+	DocumentSigned            = "document-signed"
+	DocumentUsersAdded        = "document-users-added"
+	DocumentUsersRemoved      = "document-users-removed"
+	DocumentFilesChanged      = "document-files-changed"
+	DocumentSignatureRejected = "document-signature-rejected"
+	DocumentRole              = "document-role"
+	DocumentId                = "document-id"
+	DocumentFiles             = "document-files"
 )
 
 const (

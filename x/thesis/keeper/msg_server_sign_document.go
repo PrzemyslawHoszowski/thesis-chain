@@ -3,11 +3,10 @@ package keeper
 import (
 	"context"
 	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"k8s.io/utils/strings/slices"
 	"strconv"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"thesis/x/thesis/types"
 )
 
@@ -34,6 +33,14 @@ func (k msgServer) SignDocument(goCtx context.Context, msg *types.MsgSignDocumen
 		document.State = "Signed"
 	}
 	k.SetDocument(ctx, document)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.DocumentSigned,
+			sdk.NewAttribute(types.Caller, msg.Creator),
+			sdk.NewAttribute(types.DocumentId, msg.DocumentId),
+		),
+	)
+
 	index, _ := strconv.ParseUint(document.Index, 10, 64)
 	return &types.MsgSignDocumentResponse{Id: index}, nil
 }
