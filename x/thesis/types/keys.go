@@ -35,6 +35,7 @@ const (
 	DocumentUsersRemoved      = "document-users-removed"
 	DocumentFilesChanged      = "document-files-changed"
 	DocumentSignatureRejected = "document-signature-rejected"
+	DocumentRejected          = "document-rejected"
 	DocumentRole              = "document-role"
 	DocumentId                = "document-id"
 	DocumentFiles             = "document-files"

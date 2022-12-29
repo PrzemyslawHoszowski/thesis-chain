@@ -56,6 +56,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAuthorize int = 100
 
+	opWeightMsgRejectDocument = "op_weight_msg_reject_document"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRejectDocument int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -176,6 +180,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAuthorize,
 		thesissimulation.SimulateMsgAuthorize(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRejectDocument int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRejectDocument, &weightMsgRejectDocument, nil,
+		func(_ *rand.Rand) {
+			weightMsgRejectDocument = defaultWeightMsgRejectDocument
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRejectDocument,
+		thesissimulation.SimulateMsgRejectDocument(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

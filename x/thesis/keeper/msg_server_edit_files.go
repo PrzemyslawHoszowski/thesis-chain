@@ -29,7 +29,7 @@ func (k msgServer) EditFiles(goCtx context.Context, msg *types.MsgEditFiles) (*t
 	k.SetDocument(ctx, document)
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.DocumentCreatedEvent,
+		sdk.NewEvent(types.DocumentFilesChanged,
 			sdk.NewAttribute(types.Caller, msg.Creator),
 			sdk.NewAttribute(types.DocumentFiles, strings.Join(msg.Files, ",")),
 			sdk.NewAttribute(types.DocumentId, msg.DocumentId),

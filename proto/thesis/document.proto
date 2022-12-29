@@ -11,9 +11,8 @@ message Document {
   repeated string editors = 5; 
   repeated string signers = 6; 
   repeated string viewers = 7; 
-  repeated string signed = 8; 
+  repeated string signed = 8;
   string rejectionReason = 9;
   int64 lastEditHeight = 10;
-  
 }
 
