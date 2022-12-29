@@ -5,6 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"k8s.io/utils/strings/slices"
 	"strconv"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"thesis/x/thesis/types"
@@ -26,6 +27,15 @@ func (k msgServer) EditFiles(goCtx context.Context, msg *types.MsgEditFiles) (*t
 
 	document.Files = msg.Files
 	k.SetDocument(ctx, document)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.DocumentCreatedEvent,
+			sdk.NewAttribute(types.Caller, msg.Creator),
+			sdk.NewAttribute(types.DocumentFiles, strings.Join(msg.Files, ",")),
+			sdk.NewAttribute(types.DocumentId, msg.DocumentId),
+		),
+	)
+
 	index, _ := strconv.ParseUint(document.Index, 10, 64)
 	return &types.MsgEditFilesResponse{Id: index}, nil
 }
