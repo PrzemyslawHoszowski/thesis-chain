@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	slices2 "github.com/influxdata/influxdb/pkg/slices"
 	"strconv"
 	"strings"
 
@@ -41,17 +42,17 @@ func (k msgServer) RemoveUsers(goCtx context.Context, msg *types.MsgRemoveUsers)
 
 	switch msg.Role {
 	case "Admins":
+		diff = slices2.Union(document.Admins, msg.Addresses, false)
 		document.Admins = difference(document.Admins, msg.Addresses)
-		diff = difference(document.Admins, msg.Addresses)
 	case "Editors":
+		diff = slices2.Union(document.Editors, msg.Addresses, false)
 		document.Editors = difference(document.Editors, msg.Addresses)
-		diff = difference(msg.Addresses, document.Editors)
 	case "Signers":
+		diff = slices2.Union(document.Signers, msg.Addresses, false)
 		document.Signers = difference(document.Signers, msg.Addresses)
-		diff = difference(msg.Addresses, document.Signers)
 	case "Viewers":
+		diff = slices2.Union(document.Viewers, msg.Addresses, false)
 		document.Viewers = difference(document.Viewers, msg.Addresses)
-		diff = difference(msg.Addresses, document.Viewers)
 	}
 
 	k.SetDocument(ctx, document)

@@ -55,17 +55,17 @@ func (k msgServer) AddUsers(goCtx context.Context, msg *types.MsgAddUsers) (*typ
 
 	switch msg.Role {
 	case "Admins":
+		diff = difference(msg.Addresses, document.Admins)
 		document.Admins = slices2.Union(document.Admins, msg.Addresses, false)
-		diff = difference(msg.Addresses, document.Admins)
 	case "Editors":
+		diff = difference(msg.Addresses, document.Editors)
 		document.Editors = slices2.Union(document.Editors, msg.Addresses, false)
-		diff = difference(msg.Addresses, document.Admins)
 	case "Signers":
+		diff = difference(msg.Addresses, document.Signers)
 		document.Signers = slices2.Union(document.Signers, msg.Addresses, false)
-		diff = difference(msg.Addresses, document.Admins)
 	case "Viewers":
+		diff = difference(msg.Addresses, document.Viewers)
 		document.Viewers = slices2.Union(document.Viewers, msg.Addresses, false)
-		diff = difference(msg.Addresses, document.Admins)
 	}
 
 	k.SetDocument(ctx, document)
