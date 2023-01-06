@@ -22,7 +22,7 @@ func (k msgServer) RejectSignature(goCtx context.Context, msg *types.MsgRejectSi
 		return nil, sdkerrors.Wrap(types.ErrInvalidState, "Signature can be rejected only during signing state")
 	}
 
-	if slices.Contains(document.Signed, msg.Creator) || slices.Contains(document.Admins, msg.Creator) {
+	if slices.Contains(document.Signed, msg.Creator) {
 		return nil, sdkerrors.Wrap(types.ErrAlreadySigned, fmt.Sprintf("Document already signed by %s", msg.Creator))
 	}
 
