@@ -18,7 +18,7 @@ func (k msgServer) RejectDocument(goCtx context.Context, msg *types.MsgRejectDoc
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Document not found")
 	}
 
-	if document.State != "Signed" {
+	if document.State == "Signed" {
 		return nil, sdkerrors.Wrap(types.ErrInvalidState, "Signed document can't be rejected")
 	}
 
