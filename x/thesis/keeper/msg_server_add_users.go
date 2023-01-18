@@ -13,7 +13,7 @@ import (
 )
 
 func canModifyRole(state string, role string) bool {
-	if role == "Editors" || role == "Signers" {
+	if role == "Signers" {
 		return state == "Editing"
 	}
 	return true
