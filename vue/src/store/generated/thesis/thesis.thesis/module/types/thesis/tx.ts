@@ -93,6 +93,14 @@ export interface MsgRejectDocumentResponse {
   id: number;
 }
 
+export interface MsgAckFiles {
+  creator: string;
+  files: string[];
+  doc: number;
+}
+
+export interface MsgAckFilesResponse {}
+
 const baseMsgAddCertificate: object = { creator: "", hash: "", address: "" };
 
 export const MsgAddCertificate = {
@@ -1503,6 +1511,140 @@ export const MsgRejectDocumentResponse = {
   },
 };
 
+const baseMsgAckFiles: object = { creator: "", files: "", doc: 0 };
+
+export const MsgAckFiles = {
+  encode(message: MsgAckFiles, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.files) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.doc !== 0) {
+      writer.uint32(24).uint64(message.doc);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAckFiles {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAckFiles } as MsgAckFiles;
+    message.files = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.files.push(reader.string());
+          break;
+        case 3:
+          message.doc = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAckFiles {
+    const message = { ...baseMsgAckFiles } as MsgAckFiles;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(String(e));
+      }
+    }
+    if (object.doc !== undefined && object.doc !== null) {
+      message.doc = Number(object.doc);
+    } else {
+      message.doc = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAckFiles): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.files) {
+      obj.files = message.files.map((e) => e);
+    } else {
+      obj.files = [];
+    }
+    message.doc !== undefined && (obj.doc = message.doc);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgAckFiles>): MsgAckFiles {
+    const message = { ...baseMsgAckFiles } as MsgAckFiles;
+    message.files = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.files !== undefined && object.files !== null) {
+      for (const e of object.files) {
+        message.files.push(e);
+      }
+    }
+    if (object.doc !== undefined && object.doc !== null) {
+      message.doc = object.doc;
+    } else {
+      message.doc = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgAckFilesResponse: object = {};
+
+export const MsgAckFilesResponse = {
+  encode(_: MsgAckFilesResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAckFilesResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAckFilesResponse } as MsgAckFilesResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgAckFilesResponse {
+    const message = { ...baseMsgAckFilesResponse } as MsgAckFilesResponse;
+    return message;
+  },
+
+  toJSON(_: MsgAckFilesResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgAckFilesResponse>): MsgAckFilesResponse {
+    const message = { ...baseMsgAckFilesResponse } as MsgAckFilesResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddCertificate(
@@ -1519,10 +1661,11 @@ export interface Msg {
     request: MsgRejectSignature
   ): Promise<MsgRejectSignatureResponse>;
   Authorize(request: MsgAuthorize): Promise<MsgAuthorizeResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RejectDocument(
     request: MsgRejectDocument
   ): Promise<MsgRejectDocumentResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AckFiles(request: MsgAckFiles): Promise<MsgAckFilesResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1622,6 +1765,12 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) =>
       MsgRejectDocumentResponse.decode(new Reader(data))
     );
+  }
+
+  AckFiles(request: MsgAckFiles): Promise<MsgAckFilesResponse> {
+    const data = MsgAckFiles.encode(request).finish();
+    const promise = this.rpc.request("thesis.thesis.Msg", "AckFiles", data);
+    return promise.then((data) => MsgAckFilesResponse.decode(new Reader(data)));
   }
 }
 

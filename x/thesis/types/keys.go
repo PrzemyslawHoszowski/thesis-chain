@@ -47,3 +47,8 @@ const (
 	Caller           = "caller"
 	AuthorizationId  = "authorization-id"
 )
+
+const (
+	FileAcknowledged  = "file-acknowledged"
+	AcknowledgedFiles = "acknowledged-files"
+)

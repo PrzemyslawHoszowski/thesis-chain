@@ -49,6 +49,8 @@ export interface ThesisDocument {
   lastEditHeight?: string;
 }
 
+export type ThesisMsgAckFilesResponse = object;
+
 export interface ThesisMsgAddCertificateResponse {
   /** @format uint64 */
   id?: string;

@@ -60,6 +60,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRejectDocument int = 100
 
+	opWeightMsgAckFiles = "op_weight_msg_ack_files"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAckFiles int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -191,6 +195,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRejectDocument,
 		thesissimulation.SimulateMsgRejectDocument(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAckFiles int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAckFiles, &weightMsgAckFiles, nil,
+		func(_ *rand.Rand) {
+			weightMsgAckFiles = defaultWeightMsgAckFiles
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAckFiles,
+		thesissimulation.SimulateMsgAckFiles(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
