@@ -3,6 +3,9 @@ package thesis.thesis;
 
 import "gogoproto/gogo.proto";
 import "thesis/params.proto";
+import "thesis/document.proto";
+import "thesis/system_info.proto";
+import "thesis/authorize_account.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "thesis/x/thesis/types";
@@ -10,5 +13,8 @@ option go_package = "thesis/x/thesis/types";
 // GenesisState defines the thesis module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Document documentList = 2 [(gogoproto.nullable) = false];
+  SystemInfo systemInfo = 3;
+  repeated AuthorizeAccount authorizeAccountList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

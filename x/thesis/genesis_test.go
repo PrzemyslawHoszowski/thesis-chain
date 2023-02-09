@@ -14,6 +14,25 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
+		DocumentList: []types.Document{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		SystemInfo: &types.SystemInfo{
+			NextDocumentId: 14,
+		},
+		AuthorizeAccountList: []types.AuthorizeAccount{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -25,5 +44,8 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
+	require.ElementsMatch(t, genesisState.DocumentList, got.DocumentList)
+	require.Equal(t, genesisState.SystemInfo, got.SystemInfo)
+	require.ElementsMatch(t, genesisState.AuthorizeAccountList, got.AuthorizeAccountList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

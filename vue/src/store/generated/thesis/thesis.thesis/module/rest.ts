@@ -20,6 +20,12 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface ThesisAuthorizeAccount {
+  index?: string;
+  accountId?: string;
+  address?: string;
+}
+
 export interface ThesisCertificate {
   /** @format uint64 */
   id?: string;
@@ -28,7 +34,64 @@ export interface ThesisCertificate {
   address?: string;
 }
 
+export interface ThesisDocument {
+  index?: string;
+  state?: string;
+  files?: string[];
+  admins?: string[];
+  editors?: string[];
+  signers?: string[];
+  viewers?: string[];
+  signed?: string[];
+  rejectionReason?: string;
+
+  /** @format int64 */
+  lastEditHeight?: string;
+}
+
+export type ThesisMsgAckFilesResponse = object;
+
 export interface ThesisMsgAddCertificateResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgAddUsersResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgAuthorizeResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgCreateDocumentResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgEditFilesResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgRejectDocumentResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgRejectSignatureResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgRemoveUsersResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface ThesisMsgSignDocumentResponse {
   /** @format uint64 */
   id?: string;
 }
@@ -37,6 +100,36 @@ export interface ThesisMsgAddCertificateResponse {
  * Params defines the parameters for the module.
  */
 export type ThesisParams = object;
+
+export interface ThesisQueryAllAuthorizeAccountResponse {
+  authorizeAccount?: ThesisAuthorizeAccount[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface ThesisQueryAllDocumentResponse {
+  document?: ThesisDocument[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface ThesisQueryCertificatesResponse {
   Certificate?: ThesisCertificate[];
@@ -53,12 +146,32 @@ export interface ThesisQueryCertificatesResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface ThesisQueryGetAuthorizeAccountResponse {
+  authorizeAccount?: ThesisAuthorizeAccount;
+}
+
+export interface ThesisQueryGetDocumentResponse {
+  document?: ThesisDocument;
+}
+
+export interface ThesisQueryGetSystemInfoResponse {
+  SystemInfo?: ThesisSystemInfo;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface ThesisQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: ThesisParams;
+}
+
+export interface ThesisSystemInfo {
+  /** @format uint64 */
+  nextDocumentId?: string;
+
+  /** @format uint64 */
+  nextAuthorizeId?: string;
 }
 
 /**
@@ -316,10 +429,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title thesis/certificate.proto
+ * @title thesis/authorize_account.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAuthorizeAccountAll
+   * @summary Queries a list of AuthorizeAccount items.
+   * @request GET:/thesis/thesis/authorize_account
+   */
+  queryAuthorizeAccountAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ThesisQueryAllAuthorizeAccountResponse, RpcStatus>({
+      path: `/thesis/thesis/authorize_account`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAuthorizeAccount
+   * @summary Queries a AuthorizeAccount by index.
+   * @request GET:/thesis/thesis/authorize_account/{index}
+   */
+  queryAuthorizeAccount = (index: string, params: RequestParams = {}) =>
+    this.request<ThesisQueryGetAuthorizeAccountResponse, RpcStatus>({
+      path: `/thesis/thesis/authorize_account/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -350,6 +505,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryDocumentAll
+   * @summary Queries a list of Document items.
+   * @request GET:/thesis/thesis/document
+   */
+  queryDocumentAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ThesisQueryAllDocumentResponse, RpcStatus>({
+      path: `/thesis/thesis/document`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDocument
+   * @summary Queries a Document by index.
+   * @request GET:/thesis/thesis/document/{index}
+   */
+  queryDocument = (index: string, params: RequestParams = {}) =>
+    this.request<ThesisQueryGetDocumentResponse, RpcStatus>({
+      path: `/thesis/thesis/document/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
    * @request GET:/thesis/thesis/params
@@ -357,6 +554,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<ThesisQueryParamsResponse, RpcStatus>({
       path: `/thesis/thesis/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySystemInfo
+   * @summary Queries a SystemInfo by index.
+   * @request GET:/thesis/thesis/system_info
+   */
+  querySystemInfo = (params: RequestParams = {}) =>
+    this.request<ThesisQueryGetSystemInfoResponse, RpcStatus>({
+      path: `/thesis/thesis/system_info`,
       method: "GET",
       format: "json",
       ...params,

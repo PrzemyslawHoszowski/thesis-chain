@@ -11,9 +11,6 @@ export interface Certificate {
   address: string;
 }
 
-
-
-
 const baseCertificate: object = { id: 0, creator: "", hash: "", address: "" };
 
 export const Certificate = {

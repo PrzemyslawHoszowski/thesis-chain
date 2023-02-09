@@ -23,3 +23,32 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	SystemInfoKey = "SystemInfo-value-"
+)
+
+const (
+	DocumentCreatedEvent      = "document-created"
+	DocumentSigned            = "document-signed"
+	DocumentUsersAdded        = "document-users-added"
+	DocumentUsersRemoved      = "document-users-removed"
+	DocumentFilesChanged      = "document-files-changed"
+	DocumentSignatureRejected = "document-signature-rejected"
+	DocumentRejected          = "document-rejected"
+	DocumentRole              = "document-role"
+	DocumentId                = "document-id"
+	DocumentFiles             = "document-files"
+)
+
+const (
+	EntityAuthorized = "entity-authorized"
+	AccountId        = "account-id"
+	Caller           = "caller"
+	AuthorizationId  = "authorization-id"
+)
+
+const (
+	FileAcknowledged  = "file-acknowledged"
+	AcknowledgedFiles = "acknowledged-files"
+)

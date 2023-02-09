@@ -1,8 +1,13 @@
 accounts:
   - name: alice
-    coins: ["20000token", "200000000stake"]
+    coins: ["200000000stake"]
+    # address: "cosmos1cren9wyl02qqna0tqs39k0c6a8yfsxgsszhjtk"
+    mnemonic: "disease rib steak garbage gather target fox dinosaur pull shoe copper double sad train into fiber hover roof brush present mystery old comfort industry"
+
   - name: bob
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000stake"]
+    # address: "cosmos17ae3syeplrs2v4s02rdafz7w2jpfg0kmqvvcqp"
+    mnemonic: "window before grass trip hollow tragic receive clap glance step slim frequent jump discover invite wool scan install dry such wood world bitter amazing"
 validator:
   name: alice
   staked: "100000000stake"

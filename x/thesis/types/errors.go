@@ -8,5 +8,8 @@ import (
 
 // x/thesis module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidRole    = sdkerrors.Register(ModuleName, 1200, "Invalid role")
+	ErrAlreadySigned  = sdkerrors.Register(ModuleName, 1300, "Already signed")
+	ErrInvalidState   = sdkerrors.Register(ModuleName, 1400, "Invalid state")
+	ErrInvalidAddress = sdkerrors.Register(ModuleName, 1500, "Invalid user address")
 )

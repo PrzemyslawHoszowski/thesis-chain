@@ -1,0 +1,9 @@
+syntax = "proto3";
+package thesis.thesis;
+
+option go_package = "thesis/x/thesis/types";
+
+message SystemInfo {
+  uint64 nextDocumentId = 1; 
+  uint64 nextAuthorizeId = 2;
+}

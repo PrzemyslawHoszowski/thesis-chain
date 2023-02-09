@@ -30510,6 +30510,175 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /thesis/thesis/authorize_account:
+    get:
+      summary: Queries a list of AuthorizeAccount items.
+      operationId: ThesisThesisAuthorizeAccountAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              authorizeAccount:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    accountId:
+                      type: string
+                    address:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/thesis/thesis/authorize_account/{index}':
+    get:
+      summary: Queries a AuthorizeAccount by index.
+      operationId: ThesisThesisAuthorizeAccount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              authorizeAccount:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  accountId:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /thesis/thesis/certificates:
     get:
       summary: Queries a list of Certificates items.
@@ -30638,6 +30807,229 @@ paths:
           type: boolean
       tags:
         - Query
+  /thesis/thesis/document:
+    get:
+      summary: Queries a list of Document items.
+      operationId: ThesisThesisDocumentAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              document:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    state:
+                      type: string
+                    files:
+                      type: array
+                      items:
+                        type: string
+                    admins:
+                      type: array
+                      items:
+                        type: string
+                    editors:
+                      type: array
+                      items:
+                        type: string
+                    signers:
+                      type: array
+                      items:
+                        type: string
+                    viewers:
+                      type: array
+                      items:
+                        type: string
+                    signed:
+                      type: array
+                      items:
+                        type: string
+                    rejectionReason:
+                      type: string
+                    lastEditHeight:
+                      type: string
+                      format: int64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/thesis/thesis/document/{index}':
+    get:
+      summary: Queries a Document by index.
+      operationId: ThesisThesisDocument
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              document:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  state:
+                    type: string
+                  files:
+                    type: array
+                    items:
+                      type: string
+                  admins:
+                    type: array
+                    items:
+                      type: string
+                  editors:
+                    type: array
+                    items:
+                      type: string
+                  signers:
+                    type: array
+                    items:
+                      type: string
+                  viewers:
+                    type: array
+                    items:
+                      type: string
+                  signed:
+                    type: array
+                    items:
+                      type: string
+                  rejectionReason:
+                    type: string
+                  lastEditHeight:
+                    type: string
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /thesis/thesis/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -30654,6 +31046,45 @@ paths:
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /thesis/thesis/system_info:
+    get:
+      summary: Queries a SystemInfo by index.
+      operationId: ThesisThesisSystemInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              SystemInfo:
+                type: object
+                properties:
+                  nextDocumentId:
+                    type: string
+                    format: uint64
+                  nextAuthorizeId:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -52340,6 +52771,15 @@ definitions:
     title: >-
       SignatureCounts contains information about signature reporting for a
       number of blocks
+  thesis.thesis.AuthorizeAccount:
+    type: object
+    properties:
+      index:
+        type: string
+      accountId:
+        type: string
+      address:
+        type: string
   thesis.thesis.Certificate:
     type: object
     properties:
@@ -52352,7 +52792,93 @@ definitions:
         type: string
       address:
         type: string
+  thesis.thesis.Document:
+    type: object
+    properties:
+      index:
+        type: string
+      state:
+        type: string
+      files:
+        type: array
+        items:
+          type: string
+      admins:
+        type: array
+        items:
+          type: string
+      editors:
+        type: array
+        items:
+          type: string
+      signers:
+        type: array
+        items:
+          type: string
+      viewers:
+        type: array
+        items:
+          type: string
+      signed:
+        type: array
+        items:
+          type: string
+      rejectionReason:
+        type: string
+      lastEditHeight:
+        type: string
+        format: int64
+  thesis.thesis.MsgAckFilesResponse:
+    type: object
   thesis.thesis.MsgAddCertificateResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgAddUsersResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgAuthorizeResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgCreateDocumentResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgEditFilesResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgRejectDocumentResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgRejectSignatureResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgRemoveUsersResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  thesis.thesis.MsgSignDocumentResponse:
     type: object
     properties:
       id:
@@ -52361,6 +52887,111 @@ definitions:
   thesis.thesis.Params:
     type: object
     description: Params defines the parameters for the module.
+  thesis.thesis.QueryAllAuthorizeAccountResponse:
+    type: object
+    properties:
+      authorizeAccount:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            accountId:
+              type: string
+            address:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  thesis.thesis.QueryAllDocumentResponse:
+    type: object
+    properties:
+      document:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            state:
+              type: string
+            files:
+              type: array
+              items:
+                type: string
+            admins:
+              type: array
+              items:
+                type: string
+            editors:
+              type: array
+              items:
+                type: string
+            signers:
+              type: array
+              items:
+                type: string
+            viewers:
+              type: array
+              items:
+                type: string
+            signed:
+              type: array
+              items:
+                type: string
+            rejectionReason:
+              type: string
+            lastEditHeight:
+              type: string
+              format: int64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   thesis.thesis.QueryCertificatesResponse:
     type: object
     properties:
@@ -52403,6 +53034,69 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  thesis.thesis.QueryGetAuthorizeAccountResponse:
+    type: object
+    properties:
+      authorizeAccount:
+        type: object
+        properties:
+          index:
+            type: string
+          accountId:
+            type: string
+          address:
+            type: string
+  thesis.thesis.QueryGetDocumentResponse:
+    type: object
+    properties:
+      document:
+        type: object
+        properties:
+          index:
+            type: string
+          state:
+            type: string
+          files:
+            type: array
+            items:
+              type: string
+          admins:
+            type: array
+            items:
+              type: string
+          editors:
+            type: array
+            items:
+              type: string
+          signers:
+            type: array
+            items:
+              type: string
+          viewers:
+            type: array
+            items:
+              type: string
+          signed:
+            type: array
+            items:
+              type: string
+          rejectionReason:
+            type: string
+          lastEditHeight:
+            type: string
+            format: int64
+  thesis.thesis.QueryGetSystemInfoResponse:
+    type: object
+    properties:
+      SystemInfo:
+        type: object
+        properties:
+          nextDocumentId:
+            type: string
+            format: uint64
+          nextAuthorizeId:
+            type: string
+            format: uint64
   thesis.thesis.QueryParamsResponse:
     type: object
     properties:
@@ -52410,3 +53104,12 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  thesis.thesis.SystemInfo:
+    type: object
+    properties:
+      nextDocumentId:
+        type: string
+        format: uint64
+      nextAuthorizeId:
+        type: string
+        format: uint64

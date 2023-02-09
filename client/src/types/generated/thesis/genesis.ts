@@ -1,18 +1,29 @@
 /* eslint-disable */
 import { Params } from "./params";
+import { SystemInfo } from "./system_info";
 import Long from "long";
+import { Document } from "./document";
+import { AuthorizeAccount } from "./authorize_account";
 import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "thesis.thesis";
 
 /** GenesisState defines the thesis module's genesis state. */
 export interface GenesisState {
-  /** this line is used by starport scaffolding # genesis/proto/state */
   params?: Params;
+  documentList: Document[];
+  systemInfo?: SystemInfo;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  authorizeAccountList: AuthorizeAccount[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined };
+  return {
+    params: undefined,
+    documentList: [],
+    systemInfo: undefined,
+    authorizeAccountList: [],
+  };
 }
 
 export const GenesisState = {
@@ -22,6 +33,15 @@ export const GenesisState = {
   ): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.documentList) {
+      Document.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.systemInfo !== undefined) {
+      SystemInfo.encode(message.systemInfo, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.authorizeAccountList) {
+      AuthorizeAccount.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -36,6 +56,17 @@ export const GenesisState = {
         case 1:
           message.params = Params.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.documentList.push(Document.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.systemInfo = SystemInfo.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.authorizeAccountList.push(
+            AuthorizeAccount.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -47,6 +78,17 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+      documentList: Array.isArray(object?.documentList)
+        ? object.documentList.map((e: any) => Document.fromJSON(e))
+        : [],
+      systemInfo: isSet(object.systemInfo)
+        ? SystemInfo.fromJSON(object.systemInfo)
+        : undefined,
+      authorizeAccountList: Array.isArray(object?.authorizeAccountList)
+        ? object.authorizeAccountList.map((e: any) =>
+            AuthorizeAccount.fromJSON(e)
+          )
+        : [],
     };
   },
 
@@ -54,6 +96,24 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    if (message.documentList) {
+      obj.documentList = message.documentList.map((e) =>
+        e ? Document.toJSON(e) : undefined
+      );
+    } else {
+      obj.documentList = [];
+    }
+    message.systemInfo !== undefined &&
+      (obj.systemInfo = message.systemInfo
+        ? SystemInfo.toJSON(message.systemInfo)
+        : undefined);
+    if (message.authorizeAccountList) {
+      obj.authorizeAccountList = message.authorizeAccountList.map((e) =>
+        e ? AuthorizeAccount.toJSON(e) : undefined
+      );
+    } else {
+      obj.authorizeAccountList = [];
+    }
     return obj;
   },
 
@@ -65,6 +125,16 @@ export const GenesisState = {
       object.params !== undefined && object.params !== null
         ? Params.fromPartial(object.params)
         : undefined;
+    message.documentList =
+      object.documentList?.map((e) => Document.fromPartial(e)) || [];
+    message.systemInfo =
+      object.systemInfo !== undefined && object.systemInfo !== null
+        ? SystemInfo.fromPartial(object.systemInfo)
+        : undefined;
+    message.authorizeAccountList =
+      object.authorizeAccountList?.map((e) =>
+        AuthorizeAccount.fromPartial(e)
+      ) || [];
     return message;
   },
 };

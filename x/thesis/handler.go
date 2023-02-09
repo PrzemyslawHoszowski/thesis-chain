@@ -20,6 +20,33 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgAddCertificate:
 			res, err := msgServer.AddCertificate(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateDocument:
+			res, err := msgServer.CreateDocument(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddUsers:
+			res, err := msgServer.AddUsers(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRemoveUsers:
+			res, err := msgServer.RemoveUsers(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgEditFiles:
+			res, err := msgServer.EditFiles(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSignDocument:
+			res, err := msgServer.SignDocument(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRejectSignature:
+			res, err := msgServer.RejectSignature(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAuthorize:
+			res, err := msgServer.Authorize(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRejectDocument:
+			res, err := msgServer.RejectDocument(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAckFiles:
+			res, err := msgServer.AckFiles(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)

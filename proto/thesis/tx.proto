@@ -8,6 +8,15 @@ option go_package = "thesis/x/thesis/types";
 // Msg defines the Msg service.
 service Msg {
       rpc AddCertificate(MsgAddCertificate) returns (MsgAddCertificateResponse);
+  rpc CreateDocument(MsgCreateDocument) returns (MsgCreateDocumentResponse);
+  rpc AddUsers(MsgAddUsers) returns (MsgAddUsersResponse);
+  rpc RemoveUsers(MsgRemoveUsers) returns (MsgRemoveUsersResponse);
+  rpc EditFiles(MsgEditFiles) returns (MsgEditFilesResponse);
+  rpc SignDocument(MsgSignDocument) returns (MsgSignDocumentResponse);
+  rpc RejectSignature(MsgRejectSignature) returns (MsgRejectSignatureResponse);
+  rpc Authorize(MsgAuthorize) returns (MsgAuthorizeResponse);
+  rpc RejectDocument(MsgRejectDocument) returns (MsgRejectDocumentResponse);
+  rpc AckFiles(MsgAckFiles) returns (MsgAckFilesResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,4 +29,92 @@ message MsgAddCertificate {
 message MsgAddCertificateResponse {
   uint64 id = 1;
 }
+message MsgCreateDocument {
+  string creator = 1;
+  repeated string files = 2;
+}
+
+message MsgCreateDocumentResponse {
+  uint64 id = 1;
+}
+
+message MsgAddUsers {
+  string creator = 1;
+  string documentId = 2;
+  string role = 3;
+  repeated string addresses = 4;
+}
+
+message MsgAddUsersResponse {
+  uint64 id = 1;
+}
+
+message MsgRemoveUsers {
+  string creator = 1;
+  string documentId = 2;
+  string role = 3;
+  repeated string addresses = 4;
+}
+
+message MsgRemoveUsersResponse {
+  uint64 id = 1;
+}
+
+message MsgEditFiles {
+  string creator = 1;
+  string documentId = 2;
+  repeated string files = 3;
+}
+
+message MsgEditFilesResponse {
+  uint64 id = 1;
+}
+
+message MsgSignDocument {
+  string creator = 1;
+  string documentId = 2;
+  uint64 lastEditHeight = 3;
+}
+
+message MsgSignDocumentResponse {
+  uint64 id = 1;
+}
+
+message MsgRejectSignature {
+  string creator = 1;
+  string documentId = 2;
+}
+
+message MsgRejectSignatureResponse {
+  uint64 id = 1;
+}
+
+message MsgAuthorize {
+  string creator = 1;
+  string accountId = 2;
+}
+
+message MsgAuthorizeResponse {
+  uint64 id = 1;
+}
+
+message MsgRejectDocument {
+  string creator = 1;
+  string documentId = 2;
+  string reason = 3;
+}
+
+message MsgRejectDocumentResponse {
+  uint64 id = 1;
+}
+
+message MsgAckFiles {
+  string creator = 1;
+  repeated string files = 2;
+  uint64 doc = 3;
+}
+
+message MsgAckFilesResponse {
+}
+
 // this line is used by starport scaffolding # proto/tx/message

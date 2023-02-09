@@ -1,0 +1,11 @@
+{
+  "address": "${VALIDATOR_ADDRESS}",
+  "pub_key": {
+    "type": "tendermint/PubKeyEd25519",
+    "value": "${VALIDATOR_PUBLIC_KEY}"
+  },
+  "priv_key": {
+    "type": "tendermint/PrivKeyEd25519",
+    "value": "${VALIDATOR_PRIVATE_KEY}"
+  }
+}
